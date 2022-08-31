@@ -21,11 +21,11 @@ class BaseTask:
         self.language = None
 
     def get_dataset(self, data, datatype):
-        if datatype == "train":
+        if "train" in datatype :
             self.train = data
-        elif datatype == "test":
+        elif "test" in datatype:
             self.test = data
-        elif datatype == "dev":
+        elif "dev" in datatype:
             self.dev = data
 
 
@@ -62,7 +62,9 @@ class TaskManage:
             在对应分支里实现自己的读取逻辑就可以，只要最后输出符合模型输入格式的数据就行（train，test，dev）
             """
 
-            if 'jd21' in name or 'stock' in name:
+            if 'jd21' in name or \
+                    'stock' in name or \
+                    'jd7k' in name:
                 from dataloader.load_jd_format_data import data_loader as data_loader_jd
                 [dataset, sub_dataset] = name.split('.')
                 for data_type in ['train', 'test', 'dev']:
@@ -80,13 +82,25 @@ class TaskManage:
                 [dataset, sub_dataset] = name.split('.')
                 for data_type in ['train', 'test', 'dev']:
                     path = f'data/{dataset}/data/{data_type}/{sub_dataset}.txt'
-                    task.get_dataset(data_loader_jd(path, self.max_seq_length),
+                    task.get_dataset(data_loader_jd(path, self.tokenizer, self.max_seq_length),
                                      data_type)
 
                 task.name = dataset
                 task.task_type = "dsc"
                 task.task_output = 2
                 task.language = "en"
+
+            elif 'clue' in name:
+                [dataset, sub_dataset] = name.split('.')
+                if sub_dataset in ['afqmc', 'cluewsc2020', 'cmnli', 'csl']:
+                    from dataloader.load_clue_cls_data import data_loader as data_loader_clue_cls
+                    for data_type in ['train', 'test_nolabel', 'dev']:
+                        path = f'data/{dataset}/{sub_dataset}/{data_type}.tsv'
+                        task.get_dataset(data_loader_clue_cls(path, self.tokenizer, self.max_seq_length),
+                                         data_type)
+                    pass
+                elif sub_dataset in ['tnews', 'iflytek']:
+                    pass
 
             elif 'your_dataset' in name:
                 # 实现你自己的读取逻辑
