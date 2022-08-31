@@ -30,17 +30,17 @@ def _padding(line, max_seq_length):
 def _process_dsc_data(data, tokenizer, max_seq_length):
     # token 是转化为数字和对齐
     padded_data = []
-    for (sentence, label) in enumerate(data):
+    for (sentence, label) in data:
         token = tokenizer(sentence, truncation='longest_first', max_length=max_seq_length)
         for key in token:
             token[key] = _padding(token[key], max_seq_length)
-        padded_data.append(token)
+        padded_data.append((token, label))
     return padded_data
 
 
-def data_loader(path, max_seq_length):
+def data_loader(path, tokenizer, max_seq_length):
     raw_data = _load_jd_txt_data(path)
-    data = _process_dsc_data(raw_data, max_seq_length)
+    data = _process_dsc_data(raw_data, tokenizer, max_seq_length)
     tensor_label = torch.tensor([f[1] for f in data], dtype=torch.long)
     tensor_input_ids = torch.tensor([f[0].input_ids for f in data], dtype=torch.long)
     tensor_token_type_ids = torch.tensor([f[0].token_type_ids for f in data], dtype=torch.long)

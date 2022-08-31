@@ -29,20 +29,29 @@ class BaseTask:
             self.dev = data
 
 
-class TaskList:
+class TaskManage:
     def __init__(self, args):
+        self.args = args
+
         self.task_number = 0
         self.task_path = []
         self.tasklist = []
-        self.max_seq_length = args.max_seq_length
 
-    def load_data_by_name(self, name_list, tokenizer):
+        self.max_seq_length = args.max_seq_length
+        self.tokenizer = self._set_tokenizer()
+
+    def _set_tokenizer(self):
+        if "bert" in self.args.model_name:
+            print(f"chose BertTokenizer as tokenizer.")
+            from transformers import BertTokenizer
+            return BertTokenizer.from_pretrained(self.args.model_name)
+
+    def load_data_by_name(self, name_list):
         """
         利用名字来获取数据集合,我真是个天才
         eg. jd21.修复霜, amz20.Baby
         通过自己实现数据读取方式，将任务数据和信息写入BaseTask
         :param name_list: 通过namelist来定义任务序列
-        :param tokenizer: 通常我们用一个模型进行实验对应该模型得tokenizer
         :return: List[task]
         """
 
@@ -54,20 +63,20 @@ class TaskList:
             """
 
             if 'jd21' in name or 'stock' in name:
-                from load_jd_format_data import data_loader as data_loader_jd
+                from dataloader.load_jd_format_data import data_loader as data_loader_jd
                 [dataset, sub_dataset] = name.split('.')
                 for data_type in ['train', 'test', 'dev']:
                     path = f'data/{dataset}/data/{data_type}/{sub_dataset}.txt'
-                    task.get_dataset(data_loader_jd(path, self.max_seq_length),
+                    task.get_dataset(data_loader_jd(path, self.tokenizer, self.max_seq_length),
                                      data_type)
 
-                task.name = dataset
+                task.name = name
                 task.task_type = "dsc"
                 task.task_output = 2
                 task.language = "zh"
 
             elif 'snap10k' in name or 'amz' in name:
-                from load_jd_format_data import data_loader as data_loader_jd
+                from dataloader.load_jd_format_data import data_loader as data_loader_jd
                 [dataset, sub_dataset] = name.split('.')
                 for data_type in ['train', 'test', 'dev']:
                     path = f'data/{dataset}/data/{data_type}/{sub_dataset}.txt'
@@ -84,3 +93,4 @@ class TaskList:
                 pass
 
             self.tasklist.append(task)
+            self.task_number += 1
