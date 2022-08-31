@@ -12,12 +12,12 @@ from typing import List
 class BaseTask:
     def __init__(self):
         self.task_type = None
-        self.eval_method = None
+        self.task_output = None
         self.name = None
 
         self.train = None
         self.test = None
-        self.eval = None
+        self.dev = None
         self.language = None
 
     def get_dataset(self, data, datatype):
@@ -26,7 +26,7 @@ class BaseTask:
         elif datatype == "test":
             self.test = data
         elif datatype == "dev":
-            self.eval = data
+            self.dev = data
 
 
 class TaskList:
@@ -63,7 +63,7 @@ class TaskList:
 
                 task.name = dataset
                 task.task_type = "dsc"
-                task.eval_method = 2
+                task.task_output = 2
                 task.language = "zh"
 
             elif 'snap10k' in name or 'amz' in name:
@@ -76,7 +76,7 @@ class TaskList:
 
                 task.name = dataset
                 task.task_type = "dsc"
-                task.eval_method = 2
+                task.task_output = 2
                 task.language = "en"
 
             elif 'your_dataset' in name:
