@@ -14,11 +14,12 @@ class BaseTask:
         self.task_type = None
         self.task_output = None
         self.name = None
+        self.language = None
+        self.label = None
 
         self.train = None
         self.test = None
         self.dev = None
-        self.language = None
 
     def get_dataset(self, data, datatype):
         if "train" in datatype :
@@ -92,19 +93,18 @@ class TaskManage:
 
             elif 'clue' in name:
                 [dataset, sub_dataset] = name.split('.')
-                if sub_dataset in ['afqmc', 'cluewsc2020', 'cmnli', 'csl']:
+                if sub_dataset in ['afqmc', 'cluewsc2020', 'cmnli', 'csl', 'tnews', 'iflytek']:
                     from dataloader.load_clue_cls_data import data_loader as data_loader_clue_cls
                     for data_type in ['train', 'test_nolabel', 'dev']:
                         path = f'data/{dataset}/{sub_dataset}/{data_type}.tsv'
                         task.get_dataset(data_loader_clue_cls(path, self.tokenizer, self.max_seq_length),
                                          data_type)
-                    pass
-                elif sub_dataset in ['tnews', 'iflytek']:
-                    pass
-
-            elif 'your_dataset' in name:
-                # 实现你自己的读取逻辑
-                pass
+                    task.name = dataset
+                    task.language = "zh"
+                    if sub_dataset == 'afqmc':
+                        task.task_output = 0
+                    elif sub_dataset == 'cluewsc2020':
+                        task.task_output = 1
 
             self.tasklist.append(task)
             self.task_number += 1

@@ -14,7 +14,16 @@ def set_args():
 
 
 def basic_args(parser):
-    parser.add_argument("--task_list", default='jd21.iPhone jd21.修复霜 clue.csl', type=str,
+    '''
+        CLUE:
+        clue.csl clue.afqmc clue.cluewsc2020 clue.cmnli clue.iflytek clue.tnews
+
+        JD:
+        jd21.iPhone jd21.修复霜
+
+    '''
+    parser.add_argument("--task_list", default='clue.csl clue.afqmc clue.cluewsc2020 clue.cmnli clue.iflytek clue.tnews',
+                        type=str,
                         help='input task list')
     parser.add_argument("--model_name", default='model/bert-base-chinese', type=str,
                         help='bert模型存放的目录')
