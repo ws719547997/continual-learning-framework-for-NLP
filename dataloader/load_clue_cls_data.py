@@ -22,6 +22,8 @@ def _load_clue_tsv_data(path, tokenizer, max_seq_length):
                                   padding="max_length")
             label = 0 if isTest else int(lin_sp[-1])
             contents.append((token, label))
+            # if len(contents) >= 10:
+            #     break
     return contents
 
 
