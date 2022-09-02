@@ -15,15 +15,20 @@ class BaseTask:
 
         self.train = None
         self.test = None
+        self.test_nolabel = None
         self.dev = None
         self.len_train = 0
         self.len_test = 0
         self.len_dev = 0
+        self.len_test_nolabel = 0
 
     def get_dataset(self, data, datatype):
         if "train" in datatype:
             self.train = data
             self.len_train = len(data)
+        elif "nolabel" in datatype:
+            self.test_nolabel = data
+            self.len_test_nolabel = len(data)
         elif "test" in datatype:
             self.test = data
             self.len_test = len(data)
@@ -32,9 +37,9 @@ class BaseTask:
             self.len_dev = len(data)
 
     def print_task_info(self):
-        print('-'*50)
+        print('-' * 50)
         print(f'name:{self.name} | type:{self.task_type} | language:{self.language}')
-        print(f'train:{self.len_train} | dev:{self.len_dev} | test:{self.len_test} | output:{self.task_output}')
+        print(f'train:{self.len_train} | dev:{self.len_dev} | test:{self.len_test} | test nolabel:{self.len_test_nolabel} | output:{self.task_output}')
 
 
 class TaskManage:
@@ -110,8 +115,16 @@ class TaskManage:
                     from dataloader.load_clue_cls_data import data_loader as data_loader_clue_cls
                     for data_type in ['train', 'test_nolabel', 'dev']:
                         path = f'data/{dataset}/{sub_dataset}/{data_type}.tsv'
-                        task.get_dataset(data_loader_clue_cls(path, self.tokenizer, self.max_seq_length),
-                                         data_type)
+                        # split a testset with label from trainng data
+                        if data_type == 'train':
+                            from torch.utils.data import TensorDataset
+                            tensor_dataset = data_loader_clue_cls(path, self.tokenizer, self.max_seq_length)
+                            tensor_dataset_len = len(data_loader_clue_cls(path, self.tokenizer, self.max_seq_length))
+                            task.get_dataset(TensorDataset(*tensor_dataset[0:int(tensor_dataset_len*0.8)]), data_type)
+                            task.get_dataset(TensorDataset(*tensor_dataset[int(tensor_dataset_len*0.8):]), 'test')
+                        else:
+                            task.get_dataset(data_loader_clue_cls(path, self.tokenizer, self.max_seq_length),
+                                             data_type)
                     task.name = name
                     task.language = "zh"
                     if sub_dataset == 'afqmc':
@@ -142,7 +155,7 @@ class TaskManage:
                         task.task_type = 'cls'
 
             task.print_task_info()
-            print(f'load {task.len_train+task.len_test+task.len_dev} data in {time.time() - time_start:.2f}s.')
+            print(f'load {task.len_train + task.len_test + task.len_dev} data in {time.time() - time_start:.2f}s.')
 
             self.tasklist.append(task)
             self.task_number += 1
