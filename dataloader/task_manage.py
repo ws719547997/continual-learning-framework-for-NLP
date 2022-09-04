@@ -4,8 +4,11 @@ wangsong2
 """
 import time
 
-
 class BaseTask:
+    """
+    定义了任务，里面应该包含什么
+    test_nolabel是glue和clue里面的评测数据集，没标签的，所以我从训练集里划分了20%补充到测试集里面。
+    """
     def __init__(self):
         self.task_type = None
         self.task_output = None
@@ -49,6 +52,7 @@ class TaskManage:
         self.task_number = 0
         self.task_path = []
         self.tasklist = []
+        self.tasklist_name = []
 
         self.max_seq_length = args.max_seq_length
         self.tokenizer = self._set_tokenizer()
@@ -64,7 +68,16 @@ class TaskManage:
             from transformers import BertTokenizer
             return BertTokenizer.from_pretrained(self.args.model_name)
 
-    def load_data_by_name(self, name_list):
+    def get_tasklist(self, path_or_list):
+        if path_or_list.split('.')[-1] == "txt":
+            with open(path_or_list, 'r', encoding='utf-8') as f:
+                for line in f.readlines():
+                    self.tasklist_name.append(line.strip())
+        else:
+            self.tasklist_name = path_or_list.split(' ')
+        print(f'task list: {self.tasklist_name}')
+
+    def load_data(self):
         """
         利用名字来获取数据集合,我真是个天才
         eg. jd21.修复霜, amz20.Baby
@@ -73,7 +86,7 @@ class TaskManage:
         :return: List[task]
         """
 
-        for name in name_list:
+        for name in self.tasklist_name:
             task = BaseTask()
             time_start = time.time()
             """
@@ -81,78 +94,13 @@ class TaskManage:
             在对应分支里实现自己的读取逻辑就可以，只要最后输出符合模型输入格式的数据就行（train，test，dev）
             """
 
-            if 'jd21' in name or \
-                    'stock' in name or \
-                    'jd7k' in name:
-                from dataloader.load_jd_format_data import data_loader as data_loader_jd
-                [dataset, sub_dataset] = name.split('.')
-                for data_type in ['train', 'test', 'dev']:
-                    path = f'data/{dataset}/data/{data_type}/{sub_dataset}.txt'
-                    task.get_dataset(data_loader_jd(path, self.tokenizer, self.max_seq_length),
-                                     data_type)
-
-                task.name = name
-                task.task_type = "dsc"
-                task.task_output = 2
-                task.language = "zh"
-
-            elif 'snap10k' in name or 'amz' in name:
-                from dataloader.load_jd_format_data import data_loader as data_loader_jd
-                [dataset, sub_dataset] = name.split('.')
-                for data_type in ['train', 'test', 'dev']:
-                    path = f'data/{dataset}/data/{data_type}/{sub_dataset}.txt'
-                    task.get_dataset(data_loader_jd(path, self.tokenizer, self.max_seq_length),
-                                     data_type)
-
-                task.name = name
-                task.task_type = "dsc"
-                task.task_output = 2
-                task.language = "en"
+            if name.split('.')[0] in ['jd21', 'stock', 'jd7k', 'amz20', 'snap10k']:
+                from dataloader.load_dsc_dataset import loader
+                task = loader(name, self.tokenizer, self.max_seq_length)
 
             elif 'clue' in name:
-                [dataset, sub_dataset] = name.split('.')
-                if sub_dataset in ['afqmc', 'cluewsc2020', 'cmnli', 'csl', 'tnews', 'iflytek']:
-                    from dataloader.load_clue_cls_data import data_loader as data_loader_clue_cls
-                    for data_type in ['train', 'test_nolabel', 'dev']:
-                        path = f'data/{dataset}/{sub_dataset}/{data_type}.tsv'
-                        # split a testset with label from trainng data
-                        if data_type == 'train':
-                            from torch.utils.data import TensorDataset
-                            tensor_dataset = data_loader_clue_cls(path, self.tokenizer, self.max_seq_length)
-                            tensor_dataset_len = len(data_loader_clue_cls(path, self.tokenizer, self.max_seq_length))
-                            task.get_dataset(TensorDataset(*tensor_dataset[0:int(tensor_dataset_len*0.8)]), data_type)
-                            task.get_dataset(TensorDataset(*tensor_dataset[int(tensor_dataset_len*0.8):]), 'test')
-                        else:
-                            task.get_dataset(data_loader_clue_cls(path, self.tokenizer, self.max_seq_length),
-                                             data_type)
-                    task.name = name
-                    task.language = "zh"
-                    if sub_dataset == 'afqmc':
-                        task.task_output = 2
-                        task.task_type = "matching"
-                    elif sub_dataset == 'cluewsc2020':
-                        task.task_output = 2
-                        task.label = ['false', 'true']
-                        task.task_type = 'co-reference resolution'
-                    elif sub_dataset == 'cmnli':
-                        task.task_output = 3
-                        task.label = ['entailment', 'neutral', 'contradiction']
-                        task.task_type = "nli"
-                    elif sub_dataset == 'csl':
-                        task.task_output = 2
-                        task.task_type = "matching"
-                    elif sub_dataset == 'tnews':
-                        import json
-                        with open("data/clue/tnews/labels.json", 'r', encoding='utf-8') as f:
-                            task.label = [json.loads(i)['label_desc'] for i in f]
-                        task.task_output = len(task.label)
-                        task.task_type = 'cls'
-                    elif sub_dataset == 'iflytek':
-                        import json
-                        with open("data/clue/iflytek/labels.json", 'r', encoding='utf-8') as f:
-                            task.label = [json.loads(i)['label_des'] for i in f]
-                        task.task_output = len(task.label)
-                        task.task_type = 'cls'
+                from dataloader.load_clue_cls_dataset import loader
+                task = loader(name, self.tokenizer, self.max_seq_length)
 
             task.print_task_info()
             print(f'load {task.len_train + task.len_test + task.len_dev} data in {time.time() - time_start:.2f}s.')

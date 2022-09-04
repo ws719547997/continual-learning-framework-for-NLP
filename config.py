@@ -43,7 +43,7 @@ def basic_args(parser):
     """
 
     parser.add_argument("--task_list",
-                        default='clue.afqmc clue.csl clue.cluewsc2020 clue.cmnli clue.iflytek clue.tnews',
+                        default='tasklist/jd21.txt',
                         type=str,
                         help='input task list')
     parser.add_argument("--model_name", default='model/bert-base-uncased', type=str,

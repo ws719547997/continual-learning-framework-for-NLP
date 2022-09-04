@@ -7,8 +7,8 @@ from config import set_args
 from dataloader.task_manage import TaskManage
 
 args = set_args()
-task_list = args.task_list.split(' ')
 
 task_manage = TaskManage(args)
-task_manage.load_data_by_name(task_list)
+task_manage.get_tasklist(args.task_list)
+task_manage.load_data()
 print('done')
