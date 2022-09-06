@@ -40,3 +40,8 @@
 
 #### 希望能看到被错误分类的样本
 我真是太愚蠢了，ptm生成的token还能被还原回来，也就是dataloader里面的batch在，数据就能恢复回来，真是太好了。
+
+### 模型
+是说希望能够支持pretrain和fineturn（或许还有prompt？）这样的话 我先试试把ptm和top的网络分离开；top的话，会根据每个任务，有所区别：
+传入的应该是一个ModelList，输入都是ptm随后一层的向量，sequence len * embedding。输出就是根据任务了，输入的话，都是用tokenizer统一起来。
+借鉴了UER，还要兼容transformers，还读到一个Adapter-transformers，应该研究一下怎么实现的。
