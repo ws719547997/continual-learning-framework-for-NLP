@@ -6,7 +6,7 @@ import numpy as np
 import torch
 
 from config import set_args
-from dataloader.task_manage import TaskManage
+from task_manage import TaskManage
 
 from utils import timer
 

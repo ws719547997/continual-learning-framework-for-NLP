@@ -2,7 +2,7 @@ import torch
 from torch.utils.data import TensorDataset
 
 from tokenizer.tokenizer import single_sentence_token
-from dataloader.task_manage import BaseTask
+from task_manage import BaseTask
 
 
 def _load_jd_format_data(path):

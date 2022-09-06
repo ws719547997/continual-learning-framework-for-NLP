@@ -46,7 +46,7 @@ def basic_args(parser):
                         default='tasklist/jd21.txt',
                         type=str,
                         help='input task list')
-    parser.add_argument("--model_name", default='model/bert-base-uncased', type=str,
+    parser.add_argument("--model_name", default='ptm/bert-base-uncased', type=str,
                         help='bert模型存放的目录')
     return parser
 

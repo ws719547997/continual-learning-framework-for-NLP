@@ -2,7 +2,7 @@ import torch
 from torch.utils.data import TensorDataset
 
 from tokenizer.tokenizer import single_sentence_token, sentence_pair_token
-from dataloader.task_manage import BaseTask
+from task_manage import BaseTask
 
 
 def _load_cls_format_data(path, tokenizer, max_seq_length):
@@ -49,7 +49,7 @@ def loader(name, tokenizer, max_seq_length):
                                            tensor_attention_mask,
                                            tensor_label)
 
-            # split a testset with label from trainng data
+            # split a testset with label from training data
             if data_type == 'train':
                 tensor_dataset_len = len(tensor_dataset)
                 task.get_dataset(TensorDataset(*tensor_dataset[0:int(tensor_dataset_len * 0.8)]), data_type)
