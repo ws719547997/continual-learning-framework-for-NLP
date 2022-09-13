@@ -4,7 +4,7 @@ import argparse
 def set_args():
     parser = argparse.ArgumentParser()
     parser = basic_args(parser)
-    parser = process_args(parser)
+    parser = tokenizer_args(parser)
     parser = train_args(parser)
     parser = eval_args(parser)
     parser = model_args(parser)
@@ -46,16 +46,10 @@ def basic_args(parser):
                         default='tasklist/jd21.txt',
                         type=str,
                         help='input task list')
-    parser.add_argument("--model_name", default='ptm/bert-base-uncased', type=str,
-                        help='bert模型存放的目录')
     return parser
 
 
-def process_args(parser):
-    return parser
-
-
-def train_args(parser):
+def tokenizer_args(parser):
     parser.add_argument("--max_seq_length",
                         default=128,
                         type=int,
@@ -65,9 +59,15 @@ def train_args(parser):
     return parser
 
 
+def train_args(parser):
+    return parser
+
+
 def eval_args(parser):
     return parser
 
 
 def model_args(parser):
+    parser.add_argument("--model_name", default='ptm/bert-base-uncased', type=str,
+                        help='bert模型存放的目录')
     return parser
