@@ -48,7 +48,7 @@ class GPUMonitor(Thread):
             # see detail at https://github.com/anderskm/gputil/blob/master/GPUtil/GPUtil.py
             gpus = GPUtil.getGPUs()
             for gpu_id in self.ids:
-                self.status[f'gpu:{gpu_id}']['memory'].append(gpus[gpu_id].menoryUsed)
+                self.status[f'gpu:{gpu_id}']['memory'].append(gpus[gpu_id].memoryUsed)
                 self.status[f'gpu:{gpu_id}']['load'].append(gpus[gpu_id].load)
             time.sleep(self.delay)
 
@@ -56,3 +56,9 @@ class GPUMonitor(Thread):
         self.stopped = True
         self.status.update({'time':f"{time.time()-self.start_time:.1f}"})
         return self.status
+
+if __name__ =='__main__':
+    ids = get_available_gpus()
+    gpu_monitor = GPUMonitor(2,ids)
+    time.sleep(20)
+    print(gpu_monitor.stop())
