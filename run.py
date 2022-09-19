@@ -24,8 +24,4 @@ with timer('Load task list'):
 
 print('Inits...')
 
-
-
-
-
 print('done')
