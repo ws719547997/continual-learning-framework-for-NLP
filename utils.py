@@ -4,7 +4,7 @@ import os
 import numpy as np
 import torch
 import GPUtil
-from threading import Thread
+from threading import Thread, Lock
 import time
 
 
@@ -27,7 +27,6 @@ def timer(name):
 def get_available_gpus(order='first', limit=1, maxLoad=0.5, maxMemory=0.5, memoryFree=0, includeNan=False, excludeID=[],
                        excludeUUID=[]):
     """
-
     :param order:first,last,random,load,memory
     :param limit:返回GPU的数量
     :param maxLoad:最大负载比（0~1）
@@ -43,42 +42,69 @@ def get_available_gpus(order='first', limit=1, maxLoad=0.5, maxMemory=0.5, memor
 
 
 class GPUMonitor(Thread):
-    def __init__(self, delay, gpu_ids):
+    def __init__(self, delay, gpu_ids, task_status=None):
         super(GPUMonitor, self).__init__()
-        self.stopped = False
-        self.delay = delay  # Time between calls to GPUtil
-        self.start()
-        self.status = {}
+        self._start_time = time.time()
         self.ids = gpu_ids
-        self.start_time = time.time()
-        gpus = GPUtil.getGPUs()
-
-        for gpu_id in self.ids:
-            self.status.update({f'gpu:{gpu_id}':
-                                    {'memory': [],
-                                     'load': [],
-                                     'name':gpus[gpu_id].name,
-                                     'memoryTotal':gpus[gpu_id].memoryTotal}
-                                })
-            self.status[f'gpu:{gpu_id}']['memory'].append(gpus[gpu_id].menoryUsed)
-            self.status[f'gpu:{gpu_id}']['load'].append(gpus[gpu_id].load)
+        self.gpu_status = GPUstatus(self.ids, task_status)
+        self._stopped = False
+        self.delay = delay  # Time between calls to GPUtil
+        self._value_lock = Lock()
+        self.start()
 
     def run(self):
-        while not self.stopped:
+        while not self._stopped:
             # see detail at https://github.com/anderskm/gputil/blob/master/GPUtil/GPUtil.py
+            self._value_lock.acquire()
+            self.gpu_status.add_gpu_status()
+            self._value_lock.release()
             time.sleep(self.delay)
-            gpus = GPUtil.getGPUs()
-            for gpu_id in self.ids:
-                self.status[f'gpu:{gpu_id}']['memory'].append(gpus[gpu_id].menoryUsed)
-                self.status[f'gpu:{gpu_id}']['load'].append(gpus[gpu_id].load)
+
+    def add_log(self, task_status=None):
+        self._value_lock.acquire()
+        self.gpu_status.add_gpu_status(task_status)
+        self._value_lock.release()
 
     def stop(self):
-        self.stopped = True
-        self.status.update({'time':f"{time.time()-self.start_time:.1f}"})
+        self._stopped = True
+        return self.gpu_status.finish(f"{time.time() - self._start_time:.1f}")
+
+
+class GPUstatus:
+    def __init__(self, gpu_ids, task_status='init'):
+        self.status = {}
+        self.task_status = task_status
+        self.ids = gpu_ids
+        gpus = GPUtil.getGPUs()
+        for gpu_id in self.ids:
+            self.status.update({f'GPU {gpu_id}':
+                                    {'memory': [],
+                                     'load': [],
+                                     'status': [],
+                                     'name': gpus[gpu_id].name,
+                                     'memoryTotal': gpus[gpu_id].memoryTotal}
+                                })
+
+    def add_gpu_status(self, task_status=None):
+        gpus = GPUtil.getGPUs()
+        if task_status:
+            self.task_status = task_status
+        for gpu_id in self.ids:
+            self.status[f'GPU {gpu_id}']['memory'].append(gpus[gpu_id].memoryUsed)
+            self.status[f'GPU {gpu_id}']['load'].append(gpus[gpu_id].load)
+            self.status[f'GPU {gpu_id}']['status'].append(self.task_status)
+    
+    def finish(self, during_time):
+        self.status.update({'time': during_time})
         return self.status
 
-if __name__ =='__main__':
+
+if __name__ == '__main__':
     ids = get_available_gpus()
-    gpu_monitor = GPUMonitor(2,ids)
-    time.sleep(20)
+    gpu_monitor = GPUMonitor(10, ids, 'task1')
+    time.sleep(10)
+    print(gpu_monitor.add_log('stage1'))
+    time.sleep(10)
+    print(gpu_monitor.add_log('stage2'))
+    time.sleep(10)
     print(gpu_monitor.stop())

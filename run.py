@@ -8,19 +8,14 @@ import torch
 from config import set_args
 from task_manage import TaskManage
 
-from utils import timer
+from utils import *
 
 args = set_args()
-
+set_seeds(args.seed)
 # Seed
-np.random.seed(args.seed)
-torch.manual_seed(args.seed)
-if torch.cuda.is_available():
-    torch.cuda.manual_seed(args.seed)
-else:
-    print('[CUDA unavailable]'); exit()
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-n_gpu = torch.cuda.device_count()
+
+gpu_ranks = get_available_gpus(order='load', memoryFree=8000, limit=1)
+gpu_monitor = GPUMonitor(150, gpu_ranks)
 
 task_manage = TaskManage(args)
 task_manage.get_tasklist(args.task_list)
