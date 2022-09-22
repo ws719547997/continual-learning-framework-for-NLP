@@ -4,10 +4,9 @@ import torch.nn.functional as F
 
 
 class TextCNN(nn.Module):
-    def __init__(self, taskcla, args):
+    def __init__(self, args):
         super(TextCNN, self).__init__()
 
-        self.taskcla = taskcla
         self.args = args
 
         self.FILTERS = [3, 4, 5]
@@ -20,7 +19,7 @@ class TextCNN(nn.Module):
         self.c2 = torch.nn.Conv1d(1, self.FILTER_NUM[1], self.WORD_DIM * self.FILTERS[1], stride=self.WORD_DIM)
         self.c3 = torch.nn.Conv1d(1, self.FILTER_NUM[2], self.WORD_DIM * self.FILTERS[2], stride=self.WORD_DIM)
 
-        self.dropout = nn.Dropout(0.5)
+        self.dropout = nn.Dropout(self.args.target_dropout_prob)
         return
 
     def forward(self, sequence_output):

@@ -7,12 +7,12 @@ import torch.nn.functional as F
 
 class AutoPTM(torch.nn.Module):
 
-    def __init__(self, BertModel, BertConfig, args):
+    def __init__(self, args, BertConfig, BertModel):
         super(AutoPTM, self).__init__()
-        config = BertConfig.from_pretrained(args.bert_model)
+        config = BertConfig.from_pretrained(args.model_name)
         config.return_dict = False
         self.args = args
-        self.bert = BertModel.from_pretrained(args.bert_model, config=config)
+        self.bert = BertModel.from_pretrained(args.model_name, config=config)
 
         '''
         In case you want to fix some layers
@@ -39,6 +39,6 @@ class AutoPTM(torch.nn.Module):
         sequence_output, pooled_output = \
             self.bert(input_ids=input_ids, token_type_ids=segment_ids, attention_mask=input_mask)
 
-        pooled_output = self.dropout(pooled_output)
+        sequence_output = self.dropout(sequence_output)
 
-        return pooled_output
+        return sequence_output

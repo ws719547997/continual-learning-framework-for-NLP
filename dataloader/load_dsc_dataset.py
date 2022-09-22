@@ -25,7 +25,7 @@ def loader(name, tokenizer, max_seq_length):
     task = BaseTask()
     [dataset, sub_dataset] = name.split('.')
     for data_type in ['train', 'test', 'dev']:
-        path = f'data/{dataset}/data/{data_type}/{sub_dataset}.txt'
+        path = f'datasets/{dataset}/data/{data_type}/{sub_dataset}.txt'
 
         contents, labels = _load_jd_format_data(path)
         features = single_sentence_token(contents, tokenizer, max_seq_length)

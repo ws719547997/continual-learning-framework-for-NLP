@@ -7,7 +7,8 @@ def set_args():
     parser = tokenizer_args(parser)
     parser = train_args(parser)
     parser = eval_args(parser)
-    parser = model_args(parser)
+    parser = encoder_args(parser)
+    parser = target_args(parser)
 
     args = parser.parse_args()
     return args
@@ -43,9 +44,14 @@ def basic_args(parser):
     """
 
     parser.add_argument("--task_list",
-                        default='tasklist/jd21.txt',
+                        default='jd21.褪黑素 jd21.维生素',
                         type=str,
                         help='input task list')
+
+    parser.add_argument('--seed',
+                        type=int,
+                        default=511,
+                        help="random seed for initialization")
     return parser
 
 
@@ -67,7 +73,18 @@ def eval_args(parser):
     return parser
 
 
-def model_args(parser):
+def encoder_args(parser):
     parser.add_argument("--model_name", default='ptm/bert-base-uncased', type=str,
                         help='bert模型存放的目录')
+    parser.add_argument("--bert_hidden_size",
+                        default=768,
+                        type=int,
+                        help="在target网络中很多也用到这个参数设置网络大小")
+    parser.add_argument("--hidden_dropout_prob", default=0.1, type=float,
+                        help="Dropout rate for hidden states.")
+    return parser
+
+def target_args(parser):
+    parser.add_argument("--target_dropout_prob", default=0.5, type=float,
+                        help="Dropout rate for hidden states.")
     return parser

@@ -1,7 +1,6 @@
 from typing import List
 
 import torch
-from models import *
 from models._init__ import *
 from models.encoder.automodel_fixed import AutoPTM
 
@@ -13,7 +12,7 @@ class Net(torch.nn.Module):
         self.top = top
         self.target = torch.nn.ModuleList()
         for t in target:
-            self.append(t)
+            self.target.append(t)
 
     def forward(self, input_ids, segment_ids, input_mask, t=1):
         h = self.encoder(input_ids, segment_ids, input_mask)
@@ -26,11 +25,10 @@ class Net(torch.nn.Module):
 
 
 def build_models(args, targets_name_list: List):
-    Tokenizer, Config, Model = encoders_dict['args.bert_model']
+    Tokenizer, Config, Model = encoders_dict['bert']
     encoder = AutoPTM(args, Config, Model)
-    top = targets_dict['args.top'](args)
-    targets = [targets_dict[t](args) for t in targets_name_list]
+    top = targets_dict['textcnn'](args)
+    targets = [targets_dict[t](300,2) for t in targets_name_list]
 
-    model = Net(args,encoder,top,targets)
+    model = Net(args, encoder, top, targets)
     return model
-

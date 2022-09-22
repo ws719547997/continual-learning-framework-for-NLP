@@ -7,6 +7,7 @@ import torch
 import GPUtil
 from threading import Thread, Lock
 import time
+from torchinfo import summary
 
 
 def set_seeds(seed=7):
@@ -102,6 +103,10 @@ class GPUstatus:
             self.status[f'GPU {gpu_id}']['memory'].append(gpus[gpu_id].memoryUsed)
             self.status[f'GPU {gpu_id}']['load'].append(gpus[gpu_id].load)
             self.status[f'GPU {gpu_id}']['status'].append(self.task_status)
+
+
+def get_model_summary(model, input_size,):
+    return summary(model, input_size)
 
 
 if __name__ == '__main__':

@@ -32,7 +32,7 @@ def loader(name, tokenizer, max_seq_length):
 
     if sub_dataset in ['afqmc', 'cluewsc2020', 'cmnli', 'csl', 'tnews', 'iflytek']:
         for data_type in ['train', 'test_nolabel', 'dev']:
-            path = f'data/{dataset}/{sub_dataset}/{data_type}.tsv'
+            path = f'datasets/{dataset}/{sub_dataset}/{data_type}.tsv'
             sentence1, sentence2, labels = _load_cls_format_data(path, tokenizer, max_seq_length)
             if len(sentence2) == 0:
                 features = single_sentence_token(sentence1, tokenizer, max_seq_length)
