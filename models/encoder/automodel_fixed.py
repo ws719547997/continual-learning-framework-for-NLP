@@ -5,10 +5,10 @@ from torch import nn
 import torch.nn.functional as F
 
 
-class Net(torch.nn.Module):
+class AutoPTM(torch.nn.Module):
 
-    def __init__(self, taskcla, BertModel, BertConfig, args):
-        super(Net, self).__init__()
+    def __init__(self, BertModel, BertConfig, args):
+        super(AutoPTM, self).__init__()
         config = BertConfig.from_pretrained(args.bert_model)
         config.return_dict = False
         self.args = args
@@ -29,7 +29,6 @@ class Net(torch.nn.Module):
         for param in self.bert.parameters():
             param.requires_grad = False
 
-        self.taskcla = taskcla
         self.dropout = nn.Dropout(args.hidden_dropout_prob)
 
         return

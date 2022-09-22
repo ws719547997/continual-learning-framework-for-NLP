@@ -4,12 +4,12 @@ from transformers import AutoTokenizer, AutoConfig, AutoModel
 from torch.nn import Linear
 from network.TextCNN import TextCNN
 
-models = {
+encoders_dict = {
     'bert': (BertTokenizer, BertConfig, BertModel),
     'auto': (AutoTokenizer, AutoConfig, AutoModel)
 }
 
-top = {
+targets_dict = {
     'linear': Linear,
     'textcnn': TextCNN
 }
