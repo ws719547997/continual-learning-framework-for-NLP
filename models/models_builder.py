@@ -20,12 +20,11 @@ class Net(torch.nn.Module):
         y = []
         for i in range(t):
             y.append(self.target[i](h))
-
         return y
 
 
 def build_models(args, targets_name_list: List):
-    Tokenizer, Config, Model = encoders_dict['bert']
+    Tokenizer, Config, Model = encoders_dict[args.bert_type]
     encoder = AutoPTM(args, Config, Model)
     top = targets_dict['textcnn'](args)
     targets = [targets_dict[t](300,2) for t in targets_name_list]

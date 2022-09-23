@@ -9,10 +9,10 @@ class AutoPTM(torch.nn.Module):
 
     def __init__(self, args, BertConfig, BertModel):
         super(AutoPTM, self).__init__()
-        config = BertConfig.from_pretrained(args.model_name)
+        config = BertConfig.from_pretrained(args.bert_name)
         config.return_dict = False
         self.args = args
-        self.bert = BertModel.from_pretrained(args.model_name, config=config)
+        self.bert = BertModel.from_pretrained(args.bert_name, config=config)
 
         '''
         In case you want to fix some layers

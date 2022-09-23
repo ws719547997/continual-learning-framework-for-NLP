@@ -74,7 +74,9 @@ def eval_args(parser):
 
 
 def encoder_args(parser):
-    parser.add_argument("--model_name", default='ptm/bert-base-uncased', type=str,
+    parser.add_argument("--bert_name", default='ptm/bert-base-uncased', type=str,
+                        help='bert模型存放的目录')
+    parser.add_argument("--bert_type", default='auto', type=str,
                         help='bert模型存放的目录')
     parser.add_argument("--bert_hidden_size",
                         default=768,
