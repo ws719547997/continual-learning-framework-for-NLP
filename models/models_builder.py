@@ -2,7 +2,6 @@ from typing import List
 
 import torch
 from models._init__ import *
-from models.encoder.automodel_fixed import AutoPTM
 
 
 class Net(torch.nn.Module):
@@ -23,11 +22,14 @@ class Net(torch.nn.Module):
         return y
 
 
-def build_models(args, targets_name_list: List):
-    Tokenizer, Config, Model = encoders_dict[args.bert_type]
-    encoder = AutoPTM(args, Config, Model)
-    top = targets_dict['textcnn'](args)
-    targets = [targets_dict[t](300,2) for t in targets_name_list]
+def build_models(args, task_manager):
+    Tokenizer, Config, Model = encoders_args[args.bert_type]
+    encoder = encoders[args.bert_type](args, Config, Model)
+    top = targets_dict[args.topnet](args)
+
+
+    targets = [targets_dict[t.target](300, 2) for t in task_manager.tasklist]
 
     model = Net(args, encoder, top, targets)
     return model
+

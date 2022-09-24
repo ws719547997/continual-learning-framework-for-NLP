@@ -27,7 +27,7 @@ class AutoPTM(torch.nn.Module):
 
         # BERT fixed all ===========
         for param in self.bert.parameters():
-            param.requires_grad = False
+            param.requires_grad = args.train_bert
 
         self.dropout = nn.Dropout(args.hidden_dropout_prob)
 

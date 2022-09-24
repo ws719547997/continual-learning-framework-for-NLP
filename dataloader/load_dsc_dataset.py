@@ -1,8 +1,7 @@
 import torch
 from torch.utils.data import TensorDataset
 
-from tokenizer.tokenizer import single_sentence_token
-from task_manage import BaseTask
+from tokenizer.fineturn_tokenizer import single_sentence_token
 
 
 def _load_jd_format_data(path):
@@ -21,8 +20,8 @@ def _load_jd_format_data(path):
     return contents, labels
 
 
-def loader(name, tokenizer, max_seq_length):
-    task = BaseTask()
+def dsc_loader(task, taskargs, tokenizer, max_seq_length):
+    name = taskargs['task_name']
     [dataset, sub_dataset] = name.split('.')
     for data_type in ['train', 'test', 'dev']:
         path = f'datasets/{dataset}/data/{data_type}/{sub_dataset}.txt'
@@ -42,12 +41,11 @@ def loader(name, tokenizer, max_seq_length):
         task.get_dataset(tensor_dataset, data_type)
 
     task.name = name
-    task.task_type = "dsc"
-    task.task_output = 2
+    task.task_type = taskargs['task_type']
+    task.task_output = taskargs['task_output']
+    task.language = taskargs['language']
+    task.target = taskargs['target']
+    task.label = ['POS', 'NEG']
 
-    if dataset in ['jd21', 'stock', 'jd7k']:
-        task.language = "zh"
-    elif dataset in ['amz20', 'snap10k']:
-        task.language = "en"
 
     return task

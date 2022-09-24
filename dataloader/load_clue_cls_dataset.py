@@ -1,8 +1,7 @@
 import torch
 from torch.utils.data import TensorDataset
 
-from tokenizer.tokenizer import single_sentence_token, sentence_pair_token
-from task_manage import BaseTask
+from tokenizer.fineturn_tokenizer import single_sentence_token, sentence_pair_token
 
 
 def _load_cls_format_data(path, tokenizer, max_seq_length):
@@ -26,8 +25,8 @@ def _load_cls_format_data(path, tokenizer, max_seq_length):
             labels.append(0 if isTest else int(lin_sp[-1]))
     return sentence1, sentence2, labels
 
-def loader(name, tokenizer, max_seq_length):
-    task = BaseTask()
+def clue_loader(task, taskargs, tokenizer, max_seq_length):
+    name = taskargs['task_name']
     [dataset, sub_dataset] = name.split('.')
 
     if sub_dataset in ['afqmc', 'cluewsc2020', 'cmnli', 'csl', 'tnews', 'iflytek']:

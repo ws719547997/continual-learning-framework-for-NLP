@@ -1,0 +1,82 @@
+{
+    "target": "linear",
+    "task_list": [
+        {
+            "task_name": "stock.airline",
+            "task_type": "dsc",
+            "language": "zh",
+            "task_output": 2,
+            "target": "linear"
+        },
+        {
+            "task_name": "stock.car",
+            "task_type": "dsc",
+            "language": "zh",
+            "task_output": 2,
+            "target": "linear"
+        },
+        {
+            "task_name": "stock.communication",
+            "task_type": "dsc",
+            "language": "zh",
+            "task_output": 2,
+            "target": "linear"
+        },
+        {
+            "task_name": "stock.energy",
+            "task_type": "dsc",
+            "language": "zh",
+            "task_output": 2,
+            "target": "linear"
+        },
+        {
+            "task_name": "stock.finance",
+            "task_type": "dsc",
+            "language": "zh",
+            "task_output": 2,
+            "target": "linear"
+        },
+        {
+            "task_name": "stock.manufacture",
+            "task_type": "dsc",
+            "language": "zh",
+            "task_output": 2,
+            "target": "linear"
+        },
+        {
+            "task_name": "stock.medical",
+            "task_type": "dsc",
+            "language": "zh",
+            "task_output": 2,
+            "target": "linear"
+        },
+        {
+            "task_name": "stock.Real_estate",
+            "task_type": "dsc",
+            "language": "zh",
+            "task_output": 2,
+            "target": "linear"
+        },
+        {
+            "task_name": "stock.tech",
+            "task_type": "dsc",
+            "language": "zh",
+            "task_output": 2,
+            "target": "linear"
+        },
+        {
+            "task_name": "stock.traffic",
+            "task_type": "dsc",
+            "language": "zh",
+            "task_output": 2,
+            "target": "linear"
+        },
+        {
+            "task_name": "stock.wine",
+            "task_type": "dsc",
+            "language": "zh",
+            "task_output": 2,
+            "target": "linear"
+        }
+    ]
+}

@@ -1,0 +1,145 @@
+{
+  "target": "linear",
+  "task_list": [
+    {
+      "task_name": "amz20.Sandal",
+      "task_type": "dsc",
+      "language": "en",
+      "task_output": 2,
+      "target": "linear"
+    },
+    {
+      "task_name": "amz20.Magazine_Subscriptions",
+      "task_type": "dsc",
+      "language": "en",
+      "task_output": 2,
+      "target": "linear"
+    },
+    {
+      "task_name": "amz20.RiceCooker",
+      "task_type": "dsc",
+      "language": "en",
+      "task_output": 2,
+      "target": "linear"
+    },
+    {
+      "task_name": "amz20.Flashlight",
+      "task_type": "dsc",
+      "language": "en",
+      "task_output": 2,
+      "target": "linear"
+    },
+    {
+      "task_name": "amz20.Jewelry",
+      "task_type": "dsc",
+      "language": "en",
+      "task_output": 2,
+      "target": "linear"
+    },
+    {
+      "task_name": "amz20.CableModem",
+      "task_type": "dsc",
+      "language": "en",
+      "task_output": 2,
+      "target": "linear"
+    },
+    {
+      "task_name": "amz20.GraphicsCard",
+      "task_type": "dsc",
+      "language": "en",
+      "task_output": 2,
+      "target": "linear"
+    },
+    {
+      "task_name": "amz20.GPS",
+      "task_type": "dsc",
+      "language": "en",
+      "task_output": 2,
+      "target": "linear"
+    },
+    {
+      "task_name": "amz20.Projector",
+      "task_type": "dsc",
+      "language": "en",
+      "task_output": 2,
+      "target": "linear"
+    },
+    {
+      "task_name": "amz20.Keyboard",
+      "task_type": "dsc",
+      "language": "en",
+      "task_output": 2,
+      "target": "linear"
+    },
+    {
+      "task_name": "amz20.Video_Games",
+      "task_type": "dsc",
+      "language": "en",
+      "task_output": 2,
+      "target": "linear"
+    },
+    {
+      "task_name": "amz20.AlarmClock",
+      "task_type": "dsc",
+      "language": "en",
+      "task_output": 2,
+      "target": "linear"
+    },
+    {
+      "task_name": "amz20.HomeTheaterSystem",
+      "task_type": "dsc",
+      "language": "en",
+      "task_output": 2,
+      "target": "linear"
+    },
+    {
+      "task_name": "amz20.Vacuum",
+      "task_type": "dsc",
+      "language": "en",
+      "task_output": 2,
+      "target": "linear"
+    },
+    {
+      "task_name": "amz20.Gloves",
+      "task_type": "dsc",
+      "language": "en",
+      "task_output": 2,
+      "target": "linear"
+    },
+    {
+      "task_name": "amz20.Baby",
+      "task_type": "dsc",
+      "language": "en",
+      "task_output": 2,
+      "target": "linear"
+    },
+    {
+      "task_name": "amz20.Bag",
+      "task_type": "dsc",
+      "language": "en",
+      "task_output": 2,
+      "target": "linear"
+    },
+    {
+      "task_name": "amz20.Movies_TV",
+      "task_type": "dsc",
+      "language": "en",
+      "task_output": 2,
+      "target": "linear"
+    },
+    {
+      "task_name": "amz20.Dumbbell",
+      "task_type": "dsc",
+      "language": "en",
+      "task_output": 2,
+      "target": "linear"
+    },
+    {
+      "task_name": "amz20.Headphone",
+      "task_type": "dsc",
+      "language": "en",
+      "task_output": 2,
+      "target": "linear"
+    }
+  ]
+}

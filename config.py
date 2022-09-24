@@ -8,6 +8,7 @@ def set_args():
     parser = train_args(parser)
     parser = eval_args(parser)
     parser = encoder_args(parser)
+    parser = top_args(parser)
     parser = target_args(parser)
 
     args = parser.parse_args()
@@ -44,9 +45,9 @@ def basic_args(parser):
     """
 
     parser.add_argument("--task_list",
-                        default='jd21.褪黑素 jd21.维生素',
+                        default='tasklist/jd21.json',
                         type=str,
-                        help='input task list')
+                        help='input task list,txt, or json')
 
     parser.add_argument('--seed',
                         type=int,
@@ -66,6 +67,7 @@ def tokenizer_args(parser):
 
 
 def train_args(parser):
+
     return parser
 
 
@@ -82,11 +84,20 @@ def encoder_args(parser):
                         default=768,
                         type=int,
                         help="在target网络中很多也用到这个参数设置网络大小")
+    parser.add_argument('--train_bert', action='store_true')
     parser.add_argument("--hidden_dropout_prob", default=0.1, type=float,
                         help="Dropout rate for hidden states.")
+    return parser
+
+def top_args(parser):
+    parser.add_argument("--topnet",
+                        default='textcnn',
+                        type=str,
+                        help="在encoder上加一个网络")
     return parser
 
 def target_args(parser):
     parser.add_argument("--target_dropout_prob", default=0.5, type=float,
                         help="Dropout rate for hidden states.")
+
     return parser

@@ -1,0 +1,152 @@
+{
+    "target": "linear",
+    "task_list": [
+        {
+            "task_name": "jd21.褪黑素",
+            "task_type": "dsc",
+            "language": "zh",
+            "task_output": 2,
+            "target": "linear"
+        },
+        {
+            "task_name": "jd21.维生素",
+            "task_type": "dsc",
+            "language": "zh",
+            "task_output": 2,
+            "target": "linear"
+        },
+        {
+            "task_name": "jd21.无线耳机",
+            "task_type": "dsc",
+            "language": "zh",
+            "task_output": 2,
+            "target": "linear"
+        },
+        {
+            "task_name": "jd21.蛋白粉",
+            "task_type": "dsc",
+            "language": "zh",
+            "task_output": 2,
+            "target": "linear"
+        },
+        {
+            "task_name": "jd21.游戏机",
+            "task_type": "dsc",
+            "language": "zh",
+            "task_output": 2,
+            "target": "linear"
+        },
+        {
+            "task_name": "jd21.电视",
+            "task_type": "dsc",
+            "language": "zh",
+            "task_output": 2,
+            "target": "linear"
+        },
+        {
+            "task_name": "jd21.MacBook",
+            "task_type": "dsc",
+            "language": "zh",
+            "task_output": 2,
+            "target": "linear"
+        },
+        {
+            "task_name": "jd21.洗面奶",
+            "task_type": "dsc",
+            "language": "zh",
+            "task_output": 2,
+            "target": "linear"
+        },
+        {
+            "task_name": "jd21.智能手表",
+            "task_type": "dsc",
+            "language": "zh",
+            "task_output": 2,
+            "target": "linear"
+        },
+        {
+            "task_name": "jd21.吹风机",
+            "task_type": "dsc",
+            "language": "zh",
+            "task_output": 2,
+            "target": "linear"
+        },
+        {
+            "task_name": "jd21.小米手机",
+            "task_type": "dsc",
+            "language": "zh",
+            "task_output": 2,
+            "target": "linear"
+        },
+        {
+            "task_name": "jd21.红米手机",
+            "task_type": "dsc",
+            "language": "zh",
+            "task_output": 2,
+            "target": "linear"
+        },
+        {
+            "task_name": "jd21.护肤品",
+            "task_type": "dsc",
+            "language": "zh",
+            "task_output": 2,
+            "target": "linear"
+        },
+        {
+            "task_name": "jd21.电动牙刷",
+            "task_type": "dsc",
+            "language": "zh",
+            "task_output": 2,
+            "target": "linear"
+        },
+        {
+            "task_name": "jd21.iPhone",
+            "task_type": "dsc",
+            "language": "zh",
+            "task_output": 2,
+            "target": "linear"
+        },
+        {
+            "task_name": "jd21.海鲜",
+            "task_type": "dsc",
+            "language": "zh",
+            "task_output": 2,
+            "target": "linear"
+        },
+        {
+            "task_name": "jd21.酒",
+            "task_type": "dsc",
+            "language": "zh",
+            "task_output": 2,
+            "target": "linear"
+        },
+        {
+            "task_name": "jd21.平板电脑",
+            "task_type": "dsc",
+            "language": "zh",
+            "task_output": 2,
+            "target": "linear"
+        },
+        {
+            "task_name": "jd21.修复霜",
+            "task_type": "dsc",
+            "language": "zh",
+            "task_output": 2,
+            "target": "linear"
+        },
+        {
+            "task_name": "jd21.运动鞋",
+            "task_type": "dsc",
+            "language": "zh",
+            "task_output": 2,
+            "target": "linear"
+        },
+        {
+            "task_name": "jd21.智能手环",
+            "task_type": "dsc",
+            "language": "zh",
+            "task_output": 2,
+            "target": "linear"
+        }
+    ]
+}
