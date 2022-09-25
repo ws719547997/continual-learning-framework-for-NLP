@@ -53,6 +53,10 @@ def basic_args(parser):
                         type=int,
                         default=511,
                         help="random seed for initialization")
+    parser.add_argument('--approach', type=str, default='bert_last_ncl',
+                        help='网络名称')
+    parser.add_argument('--comment', type=str, default='',
+                        help='备注')
     return parser
 
 
@@ -67,7 +71,15 @@ def tokenizer_args(parser):
 
 
 def train_args(parser):
-
+    parser.add_argument("--train_batch_size",
+                        default=128,
+                        type=int,
+                        help="Total batch size for training.")
+    parser.add_argument("--eval_batch_size",
+                        default=128,
+                        type=int,
+                        help="Total batch size for eval.")
+    parser.add_argument('--epochs', type=int, default=50)
     return parser
 
 
@@ -90,7 +102,7 @@ def encoder_args(parser):
     return parser
 
 def top_args(parser):
-    parser.add_argument("--topnet",
+    parser.add_argument("--top_type",
                         default='textcnn',
                         type=str,
                         help="在encoder上加一个网络")

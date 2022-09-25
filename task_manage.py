@@ -67,3 +67,6 @@ class TaskManage:
 
             self.tasklist.append(task)
             self.task_number += 1
+
+    def __len__(self):
+        return self.task_number

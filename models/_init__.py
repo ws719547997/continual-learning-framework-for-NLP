@@ -6,12 +6,12 @@ from models.encoder.automodel import AutoPTM
 from torch.nn import Linear
 from models.network.TextCNN import TextCNN
 
-encoders_args = {
+encoders_args_dict = {
     'bert': (BertTokenizer, BertConfig, BertModel),
     'auto': (AutoTokenizer, AutoConfig, AutoModel)
 }
 
-encoders = {
+encoders_dict = {
     'auto':AutoPTM
 }
 

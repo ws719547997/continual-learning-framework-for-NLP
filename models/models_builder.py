@@ -23,9 +23,9 @@ class Net(torch.nn.Module):
 
 
 def build_models(args, task_manager):
-    Tokenizer, Config, Model = encoders_args[args.bert_type]
-    encoder = encoders[args.bert_type](args, Config, Model)
-    top = targets_dict[args.topnet](args)
+    Tokenizer, Config, Model = encoders_args_dict[args.bert_type]
+    encoder = encoders_dict[args.bert_type](args, Config, Model)
+    top = targets_dict[args.top_type](args)
 
 
     targets = [targets_dict[t.target](300, 2) for t in task_manager.tasklist]
