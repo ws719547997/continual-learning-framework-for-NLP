@@ -56,6 +56,10 @@ for task_id, task in enumerate(task_manage.tasklist):
     valid_sampler = SequentialSampler(valid)
     valid_dataloader = DataLoader(valid, sampler=valid_sampler, batch_size=args.eval_batch_size, pin_memory=True)
 
+    for test_id, test_task in enumerate(task_manage.tasklist):
+        test = test_task.test
+        test_sampler = SequentialSampler(test)
+        test_dataloader = DataLoader(test, sampler=test_sampler, batch_size=args.eval_batch_size)
 
 
 print('done')

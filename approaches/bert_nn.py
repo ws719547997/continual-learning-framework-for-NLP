@@ -4,8 +4,8 @@ import torch
 
 
 import utils
-from tqdm import tqdm, trange
-from approaches.base.bert_cnn_base import Appr as ApprBase
+from tqdm import tqdm
+from approaches.base.bert_nn_base import Appr as ApprBase
 
 class Appr(ApprBase):
     def __init__(self,model,taskcla, args=None):

@@ -17,11 +17,6 @@ class Appr(object):
 
 
     def __init__(self,model, taskcla,args=None):
-
-
-        random.seed(args.seed)
-        np.random.seed(args.seed)
-        torch.manual_seed(args.seed)
         args.output_dir = f'res/{args.approach}'
         os.makedirs(args.output_dir, exist_ok=True)
         json.dump(args.__dict__, open(os.path.join(
@@ -37,13 +32,10 @@ class Appr(object):
 
         self.train_batch_size=args.train_batch_size
         self.eval_batch_size=args.eval_batch_size
-        self.args=args
         self.ce=torch.nn.CrossEntropyLoss()
 
         if 'one' in args.approach:
             self.initial_model=deepcopy(model)
-
-        print('BERT NCL')
 
         return
 

@@ -6,7 +6,7 @@ import time
 import json
 from dataloader.load_clue_cls_dataset import clue_loader
 from dataloader.load_dsc_dataset import dsc_loader
-from models._init__ import encoders_args
+from models._init__ import encoders_args_dict
 from tasklist.BaseTask import BaseTask
 
 
@@ -30,7 +30,7 @@ class TaskManage:
         2. [CLS] sent1 [SEP] sent2 [SEP]
         """
         print(f"chose {self.args.bert_type} as tokenizer.")
-        tokenizer, _, _ = encoders_args[self.args.bert_type]
+        tokenizer, _, _ = encoders_args_dict[self.args.bert_type]
         return tokenizer.from_pretrained(self.args.bert_name)
 
     def get_tasklist(self, task_json):

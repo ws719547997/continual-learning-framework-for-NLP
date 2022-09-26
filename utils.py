@@ -105,10 +105,6 @@ class GPUstatus:
             self.status[f'GPU {gpu_id}']['status'].append(self.task_status)
 
 
-def get_model_summary(model, input_size,):
-    return summary(model, input_size)
-
-
 if __name__ == '__main__':
     output_path = 'output/gpu_status.json'
     ids = get_available_gpus()
