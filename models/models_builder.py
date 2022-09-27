@@ -1,7 +1,28 @@
 from typing import List
 
 import torch
-from models._init__ import *
+from transformers import BertTokenizer, BertConfig, BertModel
+from transformers import AutoTokenizer, AutoConfig, AutoModel
+
+from models.encoder.automodel import AutoPTM
+
+from torch.nn import Linear
+from models.network.TextCNN import TextCNN
+
+encoders_args_dict = {
+    'bert': (BertTokenizer, BertConfig, BertModel),
+    'auto': (AutoTokenizer, AutoConfig, AutoModel)
+}
+
+encoders_dict = {
+    'auto':AutoPTM
+}
+
+targets_dict = {
+    'linear': Linear,
+    'textcnn': TextCNN
+}
+
 
 
 class Net(torch.nn.Module):
@@ -22,7 +43,7 @@ class Net(torch.nn.Module):
         return y
 
 
-def build_models(args, task_manager):
+def build_models(task_manager, args):
     Tokenizer, Config, Model = encoders_args_dict[args.bert_type]
     encoder = encoders_dict[args.bert_type](args, Config, Model)
     top = targets_dict[args.top_type](args)

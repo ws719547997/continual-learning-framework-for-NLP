@@ -4,9 +4,9 @@ wangsong2 2022.8.31 (8月过得不错！）
 """
 import math
 from torch.utils.data import DataLoader, RandomSampler, SequentialSampler, ConcatDataset
-
-from models.models_builder import build_models
 from config import set_args
+from models.models_builder import build_models
+from approaches.approches_builder import approaches_builder
 from task_manage import TaskManage
 from utils import *
 
@@ -21,7 +21,8 @@ task_manage = TaskManage(args)
 with timer('Load task list'):
     task_manage.load_data()
 
-model = build_models(args, task_manage)
+model = build_models(task_manage, args)
+appr = approaches_builder(model, task_manage, args)
 
 summary(model,
         ((32, 128), (32, 128), (32, 128)),
@@ -56,10 +57,18 @@ for task_id, task in enumerate(task_manage.tasklist):
     valid_sampler = SequentialSampler(valid)
     valid_dataloader = DataLoader(valid, sampler=valid_sampler, batch_size=args.eval_batch_size, pin_memory=True)
 
+    appr.train(task_id, train_dataloader, valid_dataloader, num_train_steps=num_train_steps, train_data=train,
+               valid_data=valid)
+
     for test_id, test_task in enumerate(task_manage.tasklist):
         test = test_task.test
         test_sampler = SequentialSampler(test)
         test_dataloader = DataLoader(test, sampler=test_sampler, batch_size=args.eval_batch_size)
 
+        test_loss, test_acc, test_f1 = appr.eval(test_id, test_dataloader)
+
+        acc[task_id, test_id] = test_acc
+        lss[task_id, test_id] = test_loss
+        f1[task_id, test_id] = test_f1
 
 print('done')

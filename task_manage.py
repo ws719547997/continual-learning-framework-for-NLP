@@ -6,7 +6,7 @@ import time
 import json
 from dataloader.load_clue_cls_dataset import clue_loader
 from dataloader.load_dsc_dataset import dsc_loader
-from models._init__ import encoders_args_dict
+from models.models_builder import encoders_args_dict
 from tasklist.BaseTask import BaseTask
 
 
