@@ -10,10 +10,9 @@ from approaches.base.buffer import Buffer as Buffer
 from itertools import zip_longest
 
 class Appr(object):
-    def __init__(self,model,taskcla, args=None):
-    # def __init__(self,model,nepochs=100,sbatch=64,lr=0.001,lr_min=1e-5,lr_factor=2,lr_patience=3,clipgrad=10000,args=None,logger=None):
+    def __init__(self,model,taskcla, args=None, device = None):
         self.model=model
-        self.nepochs=args.nepochs
+        self.epochs=args.epochs
         self.lr=args.lr
         self.lr_min=args.lr_min
         self.lr_factor=args.lr_factor
@@ -24,10 +23,9 @@ class Appr(object):
         self.eval_batch_size=args.eval_batch_size
         self.ce=torch.nn.CrossEntropyLoss()
         self.optimizer=self._get_optimizer()
-        self.sup_con = SupConLoss(temperature=args.temp,base_temperature=args.base_temp)
+        # self.sup_con = SupConLoss(temperature=args.temp,base_temperature=args.base_temp)
 
-        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        self.n_gpu = torch.cuda.device_count()
+        self.device = device if device is not None else torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
         if 'ewc' in args.approach:
@@ -270,7 +268,7 @@ class Appr(object):
 
     def _get_optimizer(self,lr=None):
         if lr is None: lr=self.lr
-        if self.args.optimizer == 'sgd' and self.args.momentum:
+        if self.args.optimizer == 'sgd' and self.args.sgd_momentum:
             print('sgd+momentum')
             return torch.optim.SGD(self.model.parameters(),lr=lr, momentum=0.9,nesterov=True)
         elif self.args.optimizer == 'sgd':

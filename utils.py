@@ -7,7 +7,6 @@ import torch
 import GPUtil
 from threading import Thread, Lock
 import time
-from torchinfo import summary
 
 
 def set_seeds(seed=7):

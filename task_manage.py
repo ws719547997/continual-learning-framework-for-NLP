@@ -39,7 +39,7 @@ class TaskManage:
             for t in j['task_list']:
                 self.tasklist_args.append(t)
 
-    def load_data(self):
+    def tasklist_builer(self):
         """
         利用名字来获取数据集合,我真是个天才
         eg. jd21.修复霜, amz20.Baby

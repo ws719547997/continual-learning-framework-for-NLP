@@ -8,6 +8,7 @@ from config import set_args
 from models.models_builder import build_models
 from approaches.approches_builder import approaches_builder
 from task_manage import TaskManage
+from torchinfo import summary
 from utils import *
 
 args = set_args()
@@ -19,15 +20,16 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 task_manage = TaskManage(args)
 with timer('Load task list'):
-    task_manage.load_data()
+    task_manage.tasklist_builer()
 
 model = build_models(task_manage, args)
-appr = approaches_builder(model, task_manage, args)
-
-summary(model,
-        ((32, 128), (32, 128), (32, 128)),
+summary(model,((32, 128), (32, 128), (32, 128)),
         dtypes=['torch.IntTensor', 'torch.IntTensor', 'torch.IntTensor'],
         device='cpu')
+
+model = model.to(device)
+appr = approaches_builder(model, task_manage, args, device)
+
 
 acc = np.zeros((len(task_manage), len(task_manage)), dtype=np.float32)
 lss = np.zeros((len(task_manage), len(task_manage)), dtype=np.float32)

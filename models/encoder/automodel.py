@@ -34,11 +34,12 @@ class AutoPTM(torch.nn.Module):
         return
 
     def forward(self, input_ids, segment_ids, input_mask):
+        # TODO：把参数放入字典
         output_dict = {}
 
         sequence_output, pooled_output = \
             self.bert(input_ids=input_ids, token_type_ids=segment_ids, attention_mask=input_mask)
 
-        sequence_output = self.dropout(sequence_output)
+        output_dict['sequence_output'] = self.dropout(sequence_output)
 
         return sequence_output

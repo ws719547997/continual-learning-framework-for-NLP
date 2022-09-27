@@ -47,8 +47,6 @@ def build_models(task_manager, args):
     Tokenizer, Config, Model = encoders_args_dict[args.bert_type]
     encoder = encoders_dict[args.bert_type](args, Config, Model)
     top = targets_dict[args.top_type](args)
-
-
     targets = [targets_dict[t.target](300, 2) for t in task_manager.tasklist]
 
     model = Net(args, encoder, top, targets)

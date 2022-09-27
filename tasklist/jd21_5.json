@@ -1,0 +1,41 @@
+{
+    "target": "linear",
+    "task_list": [
+        {
+            "task_name": "jd21.褪黑素",
+            "task_type": "dsc",
+            "language": "zh",
+            "task_output": 2,
+            "target": "linear"
+        },
+        {
+            "task_name": "jd21.维生素",
+            "task_type": "dsc",
+            "language": "zh",
+            "task_output": 2,
+            "target": "linear"
+        },
+        {
+            "task_name": "jd21.无线耳机",
+            "task_type": "dsc",
+            "language": "zh",
+            "task_output": 2,
+            "target": "linear"
+        },
+        {
+            "task_name": "jd21.蛋白粉",
+            "task_type": "dsc",
+            "language": "zh",
+            "task_output": 2,
+            "target": "linear"
+        },
+        {
+            "task_name": "jd21.游戏机",
+            "task_type": "dsc",
+            "language": "zh",
+            "task_output": 2,
+            "target": "linear"
+        }
+
+    ]
+}
