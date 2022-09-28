@@ -38,8 +38,8 @@ class Net(torch.nn.Module):
         h = self.encoder(input_ids, segment_ids, input_mask)
         h = self.top(h)
         y = []
-        for i in range(t):
-            y.append(self.target[i](h))
+        for target in self.target:
+            y.append(target(h))
         return y
 
 

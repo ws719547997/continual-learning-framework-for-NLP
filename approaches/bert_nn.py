@@ -67,7 +67,7 @@ class Appr(ApprBase):
                 bat.to(self.device) if bat is not None else None for bat in batch]
             input_ids, segment_ids, input_mask, targets = batch
             # Forward
-            outputs = self.model.forward(input_ids, segment_ids, input_mask)
+            outputs = self.model.forward(input_ids, segment_ids, input_mask, t)
             output = outputs[t]
 
             loss = self.ce(output, targets)
@@ -97,7 +97,7 @@ class Appr(ApprBase):
                 input_ids, segment_ids, input_mask, targets = batch
                 real_b = input_ids.size(0)
 
-                outputs = self.model.forward(input_ids, segment_ids, input_mask)
+                outputs = self.model.forward(input_ids, segment_ids, input_mask,t)
 
                 output = outputs[t]
 

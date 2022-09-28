@@ -21,8 +21,6 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 print('1. Load task, model and approach.....')
 task_manage = TaskManage(args)
-with timer('1.1 Load task list'):
-    task_manage.build_task()
 
 model = build_models(task_manage, args)
 summary(model,((32, 128), (32, 128), (32, 128)),
@@ -38,6 +36,7 @@ lss = np.zeros((len(task_manage), len(task_manage)), dtype=np.float32)
 f1 = np.zeros((len(task_manage), len(task_manage)), dtype=np.float32)
 
 for task_id, task in enumerate(task_manage.tasklist):
+    appr.set_args(task_manage.argslist[task_id])
     if 'mtl' in args.approach:
         # Get data. We do not put it to GPU
         if task_id == 0:

@@ -27,7 +27,6 @@ class Appr(object):
 
         self.device = device if device is not None else torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-
         if 'ewc' in args.approach:
             self.model=model
             self.model_old=None
@@ -147,6 +146,11 @@ class Appr(object):
         print('CONTEXTUAL + KIM NCL')
 
         return
+
+    def set_args(self, argslist):
+        self.epochs = argslist['epochs']
+        self.lr = argslist['lr']
+        self.optimizer = argslist['optimizer']
 
 
     def _get_optimizer_cat(self,lr=None,phase=None):

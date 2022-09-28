@@ -23,6 +23,9 @@ class TaskManage:
         self.tokenizer = self._set_tokenizer()
 
         self.get_tasklist(self.args.task_list)
+        self.build_args()
+        self.build_task()
+
 
     def _set_tokenizer(self):
         """
@@ -70,7 +73,17 @@ class TaskManage:
             self.task_number += 1
 
     def build_args(self):
-        return
+        for j in self.tasklist_args:
+            epochs = j['epochs'] if j.get('epochs') else self.args.epochs
+            lr = j['lr'] if j.get('lr') else self.args.lr
+            optimizer = j['optimizer'] if j.get('optimizer') else self.args.optimizer
+
+            self.argslist.append({
+                'epochs':epochs,
+                'lr':lr,
+                'optimizer': optimizer
+            })
+
 
     def __len__(self):
         return self.task_number
