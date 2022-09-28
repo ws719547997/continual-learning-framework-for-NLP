@@ -57,7 +57,6 @@ class Appr(ApprBase):
 
         # Restore best
         models_utils.set_model_(self.model, best_model)
-        print('saved: ')  # TODO: debug, why so well on 20newsgroup
         return
 
     def train_epoch(self, t, data, iter_bar):

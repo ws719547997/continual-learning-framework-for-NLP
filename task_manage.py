@@ -16,6 +16,7 @@ class TaskManage:
 
         self.task_number = 0
         self.tasklist = []
+        self.argslist = []
         self.tasklist_args = []
 
         self.max_seq_length = args.max_seq_length
@@ -39,7 +40,7 @@ class TaskManage:
             for t in j['task_list']:
                 self.tasklist_args.append(t)
 
-    def tasklist_builer(self):
+    def build_task(self):
         """
         利用名字来获取数据集合,我真是个天才
         eg. jd21.修复霜, amz20.Baby
@@ -67,6 +68,9 @@ class TaskManage:
 
             self.tasklist.append(task)
             self.task_number += 1
+
+    def build_args(self):
+        return
 
     def __len__(self):
         return self.task_number

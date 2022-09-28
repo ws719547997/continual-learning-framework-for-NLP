@@ -14,18 +14,6 @@ class AutoPTM(torch.nn.Module):
         self.args = args
         self.bert = BertModel.from_pretrained(args.bert_name, config=config)
 
-        '''
-        In case you want to fix some layers
-        '''
-        # BERT fixed some ===========
-        # modules = [self.bert.embeddings, self.bert.encoder.layer[:args.activate_layer_num]] #Replace activate_layer_num by what you want
-        # modules = [self.bert.encoder.layer[-1]]
-        #
-        # for module in modules:
-        #     for param in module.parameters():
-        #         param.requires_grad = False
-
-        # BERT fixed all ===========
         for param in self.bert.parameters():
             param.requires_grad = args.train_bert
 
