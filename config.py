@@ -50,6 +50,8 @@ def basic_args(parser):
     parser.add_argument('--approach', type=str, default='bert_last_ncl', help='网络名称')
     parser.add_argument('--comment', type=str, default='', help='备注')
     parser.add_argument('--f1_macro', action='store_true')
+    parser.add_argument('--mutli_task', action='store_true')
+    parser.add_argument('--few_shot', action='store_true')
     return parser
 
 

@@ -3,7 +3,7 @@
 wangsong2 2022.8.31 (8月过得不错！）
 """
 import math
-from torch.utils.data import DataLoader, RandomSampler, SequentialSampler, ConcatDataset
+from torch.utils.data import DataLoader, RandomSampler, SequentialSampler, ConcatDataset, TensorDataset
 from config import set_args
 from models.models_builder import build_models
 from approaches.approches_builder import build_approaches
@@ -13,6 +13,9 @@ from utils import *
 
 print('0. init.....')
 args = set_args()
+
+args.few_shot = True
+
 set_seeds(args.seed)
 gpu_ranks = get_available_gpus(order='load', memoryFree=8000, limit=1)
 os.environ['CUDA_LAUNCH_BLOCKING'] = str(gpu_ranks[0])
@@ -37,7 +40,7 @@ f1 = np.zeros((len(task_manage), len(task_manage)), dtype=np.float32)
 
 for task_id, task in enumerate(task_manage.tasklist):
     appr.set_args(task_manage.argslist[task_id])
-    if 'mtl' in args.approach:
+    if args.mutli_task :
         # Get data. We do not put it to GPU
         if task_id == 0:
             train = task.train
@@ -49,6 +52,11 @@ for task_id, task in enumerate(task_manage.tasklist):
             num_train_steps += int(math.ceil(task.len_train / args.train_batch_size)) * args.epochs
         if task_id < len(task_manage) - 1: continue  # only want the last one
 
+    elif args.few_shot and task_manage.tasklist_args[task_id].get('train_samples') is not None:
+        train = TensorDataset(*task.train[:task_manage.tasklist_args[task_id]['train_samples']])
+        valid = task.dev
+        num_train_steps = \
+                int(math.ceil(task_manage.tasklist_args[task_id]['train_samples'] / args.train_batch_size)) * args.epochs
     else:
         train = task.train
         valid = task.dev
