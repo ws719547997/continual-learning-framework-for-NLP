@@ -3,21 +3,20 @@
 """
 import json
 
-root_path = 'stock.txt'
-output_path = 'stock.json'
+root_path = 'clue.txt'
+output_path = 'clue.json'
 
 task_list = []
 task_json = {}
 with open(root_path, 'r', encoding='utf-8') as f:
     task_list = [l.strip() for l in f]
 
-task_json.update({'target':'linear'})
 task_json.update({'task_list':[]})
 for task in task_list:
     task_json['task_list'].append({
         'task_name':task,
         'task_type':'dsc',
-        'language':"zh",
+        'language':"en",
         'task_output':2,
         'target':'linear'
     })

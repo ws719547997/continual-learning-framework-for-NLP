@@ -1,0 +1,46 @@
+{
+    "task_list": [
+        {
+            "task_name": "clue.csl",
+            "task_type": "matching",
+            "language": "en",
+            "task_output": 2,
+            "target": "linear"
+        },
+        {
+            "task_name": "clue.afqmc",
+            "task_type": "matching",
+            "language": "en",
+            "task_output": 2,
+            "target": "linear"
+        },
+        {
+            "task_name": "clue.cluewsc2020",
+            "task_type": "co-reference resolution",
+            "language": "en",
+            "task_output": 2,
+            "target": "linear"
+        },
+        {
+            "task_name": "clue.cmnli",
+            "task_type": "nli",
+            "language": "en",
+            "task_output": 3,
+            "target": "linear"
+        },
+        {
+            "task_name": "clue.iflytek",
+            "task_type": "cls",
+            "language": "en",
+            "task_output": 2,
+            "target": "linear"
+        },
+        {
+            "task_name": "clue.tnews",
+            "task_type": "cls",
+            "language": "en",
+            "task_output": 2,
+            "target": "linear"
+        }
+    ]
+}

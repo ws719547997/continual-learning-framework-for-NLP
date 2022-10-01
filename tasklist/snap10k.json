@@ -1,0 +1,151 @@
+{
+    "task_list": [
+        {
+            "task_name": "snap10k.Automotive_5",
+            "task_type": "dsc",
+            "language": "en",
+            "task_output": 2,
+            "target": "linear"
+        },
+        {
+            "task_name": "snap10k.Electronics_5",
+            "task_type": "dsc",
+            "language": "en",
+            "task_output": 2,
+            "target": "linear"
+        },
+        {
+            "task_name": "snap10k.Industrial_and_Scientific_5",
+            "task_type": "dsc",
+            "language": "en",
+            "task_output": 2,
+            "target": "linear"
+        },
+        {
+            "task_name": "snap10k.Kindle_Store_5",
+            "task_type": "dsc",
+            "language": "en",
+            "task_output": 2,
+            "target": "linear"
+        },
+        {
+            "task_name": "snap10k.Cell_Phones_and_Accessories_5",
+            "task_type": "dsc",
+            "language": "en",
+            "task_output": 2,
+            "target": "linear"
+        },
+        {
+            "task_name": "snap10k.Musical_Instruments_5",
+            "task_type": "dsc",
+            "language": "en",
+            "task_output": 2,
+            "target": "linear"
+        },
+        {
+            "task_name": "snap10k.Office_Products_5",
+            "task_type": "dsc",
+            "language": "en",
+            "task_output": 2,
+            "target": "linear"
+        },
+        {
+            "task_name": "snap10k.Patio_Lawn_and_Garden_5",
+            "task_type": "dsc",
+            "language": "en",
+            "task_output": 2,
+            "target": "linear"
+        },
+        {
+            "task_name": "snap10k.Sports_and_Outdoors_5",
+            "task_type": "dsc",
+            "language": "en",
+            "task_output": 2,
+            "target": "linear"
+        },
+        {
+            "task_name": "snap10k.Luxury_Beauty_5",
+            "task_type": "dsc",
+            "language": "en",
+            "task_output": 2,
+            "target": "linear"
+        },
+        {
+            "task_name": "snap10k.Grocery_and_Gourmet_Food_5",
+            "task_type": "dsc",
+            "language": "en",
+            "task_output": 2,
+            "target": "linear"
+        },
+        {
+            "task_name": "snap10k.Digital_Music_5",
+            "task_type": "dsc",
+            "language": "en",
+            "task_output": 2,
+            "target": "linear"
+        },
+        {
+            "task_name": "snap10k.Tools_and_Home_Improvement_5",
+            "task_type": "dsc",
+            "language": "en",
+            "task_output": 2,
+            "target": "linear"
+        },
+        {
+            "task_name": "snap10k.Pet_Supplies_5",
+            "task_type": "dsc",
+            "language": "en",
+            "task_output": 2,
+            "target": "linear"
+        },
+        {
+            "task_name": "snap10k.Prime_Pantry_5",
+            "task_type": "dsc",
+            "language": "en",
+            "task_output": 2,
+            "target": "linear"
+        },
+        {
+            "task_name": "snap10k.Toys_and_Games_5",
+            "task_type": "dsc",
+            "language": "en",
+            "task_output": 2,
+            "target": "linear"
+        },
+        {
+            "task_name": "snap10k.Movies_and_TV_5",
+            "task_type": "dsc",
+            "language": "en",
+            "task_output": 2,
+            "target": "linear"
+        },
+        {
+            "task_name": "snap10k.Home_and_Kitchen_5",
+            "task_type": "dsc",
+            "language": "en",
+            "task_output": 2,
+            "target": "linear"
+        },
+        {
+            "task_name": "snap10k.Arts_Crafts_and_Sewing_5",
+            "task_type": "dsc",
+            "language": "en",
+            "task_output": 2,
+            "target": "linear"
+        },
+        {
+            "task_name": "snap10k.Video_Games_5",
+            "task_type": "dsc",
+            "language": "en",
+            "task_output": 2,
+            "target": "linear"
+        },
+        {
+            "task_name": "snap10k.CDs_and_Vinyl_5",
+            "task_type": "dsc",
+            "language": "en",
+            "task_output": 2,
+            "target": "linear"
+        }
+    ]
+}

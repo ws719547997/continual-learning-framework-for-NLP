@@ -20,14 +20,22 @@ def _load_jd_format_data(path):
     return contents, labels
 
 
-def dsc_loader(task, taskargs, tokenizer, max_seq_length):
-    name = taskargs['task_name']
-    [dataset, sub_dataset] = name.split('.')
+def dsc_loader(task, tokenizer):
+    # 基础信息
+    task.name = task.json_args['task_name']
+    task.task_type = task.json_args['task_type']
+    task.task_output = task.json_args['task_output']
+    task.language = task.json_args['language']
+    task.target = task.json_args['target']
+    task.label = ['POS', 'NEG']
+
+    # 读取数据
+    [dataset, sub_dataset] = task.name.split('.')
     for data_type in ['train', 'test', 'dev']:
         path = f'datasets/{dataset}/data/{data_type}/{sub_dataset}.txt'
 
         contents, labels = _load_jd_format_data(path)
-        features = single_sentence_token(contents, tokenizer, max_seq_length)
+        features = single_sentence_token(contents, tokenizer, task.args.max_seq_length)
 
         tensor_label = torch.tensor(labels, dtype=torch.long)
         tensor_input_ids = torch.tensor([f.input_ids for f in features], dtype=torch.long)
@@ -39,13 +47,4 @@ def dsc_loader(task, taskargs, tokenizer, max_seq_length):
                                        tensor_attention_mask,
                                        tensor_label)
         task.get_dataset(tensor_dataset, data_type)
-
-    task.name = name
-    task.task_type = taskargs['task_type']
-    task.task_output = taskargs['task_output']
-    task.language = taskargs['language']
-    task.target = taskargs['target']
-    task.label = ['POS', 'NEG']
-
-
     return task

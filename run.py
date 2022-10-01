@@ -7,7 +7,7 @@ from torch.utils.data import DataLoader, RandomSampler, SequentialSampler, Conca
 from config import set_args
 from models.models_builder import build_models
 from approaches.approches_builder import build_approaches
-from task_manage import TaskManage
+from task.task_manage import TaskManage
 from torchinfo import summary
 from utils import *
 
@@ -25,6 +25,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print('1. Load task, model and approach.....')
 task_manage = TaskManage(args)
 
+
 model = build_models(task_manage, args)
 summary(model,((32, 128), (32, 128), (32, 128)),
         dtypes=['torch.IntTensor', 'torch.IntTensor', 'torch.IntTensor'],
@@ -39,27 +40,28 @@ lss = np.zeros((len(task_manage), len(task_manage)), dtype=np.float32)
 f1 = np.zeros((len(task_manage), len(task_manage)), dtype=np.float32)
 
 for task_id, task in enumerate(task_manage.tasklist):
+    args = task_manage.set_task_args(args,task)
     appr.set_args(task_manage.argslist[task_id])
     if args.mutli_task :
         # Get data. We do not put it to GPU
         if task_id == 0:
-            train = task.train
-            valid = task.dev
+            train = task.train_data
+            valid = task.dev_data
             num_train_steps = int(math.ceil(task.len_train / args.train_batch_size)) * args.epochs
         else:
-            train = ConcatDataset([train, task.train])
-            valid = ConcatDataset([valid, task.dev])
+            train = ConcatDataset([train, task.train_data])
+            valid = ConcatDataset([valid, task.dev_data])
             num_train_steps += int(math.ceil(task.len_train / args.train_batch_size)) * args.epochs
         if task_id < len(task_manage) - 1: continue  # only want the last one
 
     elif args.few_shot and task_manage.tasklist_args[task_id].get('train_samples') is not None:
-        train = TensorDataset(*task.train[:task_manage.tasklist_args[task_id]['train_samples']])
-        valid = task.dev
+        train = TensorDataset(*task.train_data[:task_manage.tasklist_args[task_id]['train_samples']])
+        valid = task.dev_data
         num_train_steps = \
                 int(math.ceil(task_manage.tasklist_args[task_id]['train_samples'] / args.train_batch_size)) * args.epochs
     else:
-        train = task.train
-        valid = task.dev
+        train = task.train_data
+        valid = task.dev_data
         num_train_steps = int(math.ceil(task.len_train / args.train_batch_size)) * args.epochs
 
     train_sampler = RandomSampler(train)
@@ -68,11 +70,11 @@ for task_id, task in enumerate(task_manage.tasklist):
     valid_sampler = SequentialSampler(valid)
     valid_dataloader = DataLoader(valid, sampler=valid_sampler, batch_size=args.eval_batch_size, pin_memory=True)
 
-    appr.train(task_id, train_dataloader, valid_dataloader, num_train_steps=num_train_steps, train_data=train,
+    appr.train(args, task_id, train_dataloader, valid_dataloader, num_train_steps=num_train_steps, train_data=train,
                valid_data=valid)
 
     for test_id, test_task in enumerate(task_manage.tasklist):
-        test = test_task.test
+        test = test_task.test_data
         test_sampler = SequentialSampler(test)
         test_dataloader = DataLoader(test, sampler=test_sampler, batch_size=args.eval_batch_size)
 

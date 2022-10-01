@@ -12,16 +12,16 @@ class Appr(ApprBase):
         super(Appr, self).__init__(model=model, taskcla=taskcla, args=args, device=device)
         return
 
-    def train(self, t, train, valid, num_train_steps=None, train_data=None, valid_data=None):
+    def train(self, args, t, train, valid, num_train_steps=None, train_data=None, valid_data=None):
 
         best_loss = np.inf
         best_model = models_utils.get_model(self.model)
-        lr = self.lr
-        patience = self.lr_patience
+        lr = args.lr
+        patience = args.lr_patience
         self.optimizer = self._get_optimizer(lr)
 
         # Loop epochs
-        for e in range(self.epochs):
+        for e in range(args.epochs):
             # Train
             clock0 = time.time()
             iter_bar = tqdm(train, desc='Train Iter (loss=X.XXX)')
@@ -30,8 +30,8 @@ class Appr(ApprBase):
             train_loss, train_acc, train_f1_macro = self.eval(t, train)
             clock2 = time.time()
             print(f'Epoch {e + 1}, '
-                  f'time {self.train_batch_size * (clock1 - clock0) / len(train):4.2f}s / '
-                  f'{1000 * self.train_batch_size * (clock2 - clock1) / len(train):4.2f}s | '
+                  f'time {args.train_batch_size * (clock1 - clock0) / len(train):4.2f}s / '
+                  f'{1000 * args.train_batch_size * (clock2 - clock1) / len(train):4.2f}s | '
                   f'Train: loss={train_loss:.3f}, acc={100*train_acc:5.1f}',
                   end='')
             # Valid
@@ -41,17 +41,17 @@ class Appr(ApprBase):
             if valid_loss < best_loss:
                 best_loss = valid_loss
                 best_model = models_utils.get_model(self.model)
-                patience = self.lr_patience
+                patience = args.lr_patience
                 print(' *', end='')
             else:
                 patience -= 1
                 if patience <= 0:
-                    lr /= self.lr_factor
+                    lr /= args.lr_factor
                     print(' lr={:.1e}'.format(lr), end='')
-                    if lr < self.lr_min:
+                    if lr < args.lr_min:
                         print()
                         break
-                    patience = self.lr_patience
+                    patience = args.lr_patience
                     self.optimizer = self._get_optimizer(lr)
             print()
 
