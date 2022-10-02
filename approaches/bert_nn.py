@@ -4,24 +4,20 @@ import torch
 
 from models import models_utils
 from tqdm import tqdm
-from approaches.base.bert_nn_base import Appr as ApprBase
+from approaches.base.appr_base import Appr as ApprBase
 
 
 class Appr(ApprBase):
-    def __init__(self, model, taskcla, args=None, device=None):
-        super(Appr, self).__init__(model=model, taskcla=taskcla, args=args, device=device)
+    def __init__(self, model, args, device):
+        super(Appr, self).__init__(model=model, args=args, device=device)
         return
 
     def train(self, args, t, train, valid, num_train_steps=None, train_data=None, valid_data=None):
-
+        self.set_args(args)
         best_loss = np.inf
-        best_model = models_utils.get_model(self.model)
-        lr = args.lr
-        patience = args.lr_patience
-        self.optimizer = self._get_optimizer(lr)
 
         # Loop epochs
-        for e in range(args.epochs):
+        for e in range(self.epochs):
             # Train
             clock0 = time.time()
             iter_bar = tqdm(train, desc='Train Iter (loss=X.XXX)')
@@ -30,8 +26,8 @@ class Appr(ApprBase):
             train_loss, train_acc, train_f1_macro = self.eval(t, train)
             clock2 = time.time()
             print(f'Epoch {e + 1}, '
-                  f'time {args.train_batch_size * (clock1 - clock0) / len(train):4.2f}s / '
-                  f'{1000 * args.train_batch_size * (clock2 - clock1) / len(train):4.2f}s | '
+                  f'time {self.train_batch_size * (clock1 - clock0) / len(train):4.2f}s / '
+                  f'{1000 * self.train_batch_size * (clock2 - clock1) / len(train):4.2f}s | '
                   f'Train: loss={train_loss:.3f}, acc={100*train_acc:5.1f}',
                   end='')
             # Valid
@@ -41,18 +37,18 @@ class Appr(ApprBase):
             if valid_loss < best_loss:
                 best_loss = valid_loss
                 best_model = models_utils.get_model(self.model)
-                patience = args.lr_patience
+                patience = self.lr_patience
                 print(' *', end='')
             else:
                 patience -= 1
                 if patience <= 0:
-                    lr /= args.lr_factor
-                    print(' lr={:.1e}'.format(lr), end='')
-                    if lr < args.lr_min:
+                    self.lr /= self.lr_factor
+                    print(' lr={:.1e}'.format(self.lr), end='')
+                    if self.lr < self.lr_min:
                         print()
                         break
-                    patience = args.lr_patience
-                    self.optimizer = self._get_optimizer(lr)
+                    patience = self.lr_patience
+                    self.optimizer = self._get_optimizer(self.lr)
             print()
 
         # Restore best

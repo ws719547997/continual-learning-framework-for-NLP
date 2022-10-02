@@ -147,11 +147,6 @@ class Appr(object):
 
         return
 
-    def set_args(self, argslist):
-        self.epochs = argslist['epochs']
-        self.lr = argslist['lr']
-        self.optimizer = argslist['optimizer']
-
 
     def _get_optimizer_cat(self,lr=None,phase=None):
         if lr is None: lr=self.lr

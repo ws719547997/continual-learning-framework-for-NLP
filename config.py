@@ -69,7 +69,7 @@ def train_args(parser):
     parser.add_argument('--epochs', type=int, default=50)
     parser.add_argument('--optimizer', type=str, default='sgd')
     parser.add_argument('--sgd_momentum', action='store_true')
-    parser.add_argument('--lr', type=float, default=5e-5)
+    parser.add_argument('--lr', type=float, default=0.001)
     parser.add_argument('--lr_min', default=1e-4, type=float, required=False, help='(default=%(default)f)')
     parser.add_argument('--lr_factor', default=3, type=float, required=False, help='(default=%(default)f)')
     parser.add_argument('--lr_patience', default=3, type=int, required=False, help='(default=%(default)f)')

@@ -32,7 +32,7 @@ summary(model,((32, 128), (32, 128), (32, 128)),
         device='cpu')
 
 model = model.to(device)
-appr = build_approaches(model, task_manage, args, device)
+appr = build_approaches(model, args, device)
 
 print('2. Start training.....')
 acc = np.zeros((len(task_manage), len(task_manage)), dtype=np.float32)
@@ -41,7 +41,6 @@ f1 = np.zeros((len(task_manage), len(task_manage)), dtype=np.float32)
 
 for task_id, task in enumerate(task_manage.tasklist):
     args = task_manage.set_task_args(args,task)
-    appr.set_args(task_manage.argslist[task_id])
     if args.mutli_task :
         # Get data. We do not put it to GPU
         if task_id == 0:
@@ -54,15 +53,15 @@ for task_id, task in enumerate(task_manage.tasklist):
             num_train_steps += int(math.ceil(task.len_train / args.train_batch_size)) * args.epochs
         if task_id < len(task_manage) - 1: continue  # only want the last one
 
-    elif args.few_shot and task_manage.tasklist_args[task_id].get('train_samples') is not None:
-        train = TensorDataset(*task.train_data[:task_manage.tasklist_args[task_id]['train_samples']])
+    elif args.few_shot and task.json_args.get('train_samples') is not None:
+        train = TensorDataset(*task.train_data[:task.json_args.get('train_samples')])
         valid = task.dev_data
         num_train_steps = \
-                int(math.ceil(task_manage.tasklist_args[task_id]['train_samples'] / args.train_batch_size)) * args.epochs
+                int(math.ceil(task.json_args.get('train_samples') / args.train_batch_size)) * args.epochs
     else:
         train = task.train_data
         valid = task.dev_data
-        num_train_steps = int(math.ceil(task.len_train / args.train_batch_size)) * args.epochs
+        num_train_steps = int(math.ceil(len(task.train_data) / args.train_batch_size)) * args.epochs
 
     train_sampler = RandomSampler(train)
     train_dataloader = DataLoader(train, sampler=train_sampler, batch_size=args.train_batch_size, pin_memory=True)
