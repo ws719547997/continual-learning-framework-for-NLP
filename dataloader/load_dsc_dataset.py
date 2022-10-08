@@ -20,7 +20,7 @@ def _load_jd_format_data(path):
     return contents, labels
 
 
-def dsc_loader(task, tokenizer):
+def dsc_loader(args, task, tokenizer):
     # 基础信息
     task.name = task.json_args['task_name']
     task.task_type = task.json_args['task_type']
@@ -35,7 +35,7 @@ def dsc_loader(task, tokenizer):
         path = f'datasets/{dataset}/data/{data_type}/{sub_dataset}.txt'
 
         contents, labels = _load_jd_format_data(path)
-        features = single_sentence_token(contents, tokenizer, task.args.max_seq_length)
+        features = single_sentence_token(contents, tokenizer, args.max_seq_length)
 
         tensor_label = torch.tensor(labels, dtype=torch.long)
         tensor_input_ids = torch.tensor([f.input_ids for f in features], dtype=torch.long)

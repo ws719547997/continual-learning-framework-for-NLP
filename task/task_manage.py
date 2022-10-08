@@ -8,7 +8,7 @@ from typing import List
 
 from dataloader.load_clue_cls_dataset import clue_loader
 from dataloader.load_dsc_dataset import dsc_loader
-from models.models_builder import encoders_args_dict
+from models.model_builder import build_encoder
 from task.BaseTask import BaseTask
 
 
@@ -25,7 +25,7 @@ class TaskManage:
         with open(self.args.task_list, 'r', encoding='utf-8') as f:
             j = json.load(f)
             for tj in j['task_list']:
-                self.tasklist.append(BaseTask(self.args, tj))
+                self.tasklist.append(BaseTask(tj))
 
     def set_task_args(self, args, task: BaseTask):
         for k, v in task.json_args.items():
@@ -40,7 +40,7 @@ class TaskManage:
         2. [CLS] sent1 [SEP] sent2 [SEP]
         """
         print(f"Chose {self.args.bert_type} as tokenizer.")
-        tokenizer, _, _ = encoders_args_dict[self.args.bert_type]
+        tokenizer, _, _ = build_encoder(self.args)
         return tokenizer.from_pretrained(self.args.bert_name)
 
     def build_task(self):
@@ -60,10 +60,10 @@ class TaskManage:
             """
             name = task.json_args['task_name']
             if name.split('.')[0] in ['jd21', 'stock', 'jd7k', 'amz20', 'snap10k']:
-                task = dsc_loader(task, self.tokenizer)
+                task = dsc_loader(self.args, task, self.tokenizer)
 
             elif 'clue' in name:
-                task = clue_loader(task, self.tokenizer)
+                task = clue_loader(self.args, task, self.tokenizer)
 
             self.print_task_info(task)
             print(f'Load all data in {time.time() - time_start:.2f}s.')

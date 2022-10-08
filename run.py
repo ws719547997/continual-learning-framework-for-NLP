@@ -5,11 +5,10 @@ wangsong2 2022.8.31 (8月过得不错！）
 import math
 from torch.utils.data import DataLoader, RandomSampler, SequentialSampler, ConcatDataset, TensorDataset
 from config import set_args
-from models.models_builder import build_models
-from approaches.approches_builder import build_approaches
 from task.task_manage import TaskManage
 from torchinfo import summary
 from utils import *
+from method_builder import build_method
 
 print('0. init.....')
 args = set_args()
@@ -17,6 +16,7 @@ args = set_args()
 args.few_shot = True
 
 set_seeds(args.seed)
+
 gpu_ranks = get_available_gpus(order='load', memoryFree=8000, limit=1)
 os.environ['CUDA_LAUNCH_BLOCKING'] = str(gpu_ranks[0])
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -25,14 +25,13 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print('1. Load task, model and approach.....')
 task_manage = TaskManage(args)
 
-
-model = build_models(task_manage, args)
-summary(model,((32, 128), (32, 128), (32, 128)),
+Appr, Net = build_method(args)
+model = Net(args, task_manage)
+summary(model, ((32, 128), (32, 128), (32, 128)),
         dtypes=['torch.IntTensor', 'torch.IntTensor', 'torch.IntTensor'],
         device='cpu')
-
 model = model.to(device)
-appr = build_approaches(model, args, device)
+appr = Appr(model, args, device)
 
 print('2. Start training.....')
 acc = np.zeros((len(task_manage), len(task_manage)), dtype=np.float32)
@@ -40,8 +39,10 @@ lss = np.zeros((len(task_manage), len(task_manage)), dtype=np.float32)
 f1 = np.zeros((len(task_manage), len(task_manage)), dtype=np.float32)
 
 for task_id, task in enumerate(task_manage.tasklist):
-    args = task_manage.set_task_args(args,task)
-    if args.mutli_task :
+    # 为每个任务设定自己的参数
+    args = task_manage.set_task_args(args, task)
+
+    if args.mutli_task:
         # Get data. We do not put it to GPU
         if task_id == 0:
             train = task.train_data
@@ -51,13 +52,14 @@ for task_id, task in enumerate(task_manage.tasklist):
             train = ConcatDataset([train, task.train_data])
             valid = ConcatDataset([valid, task.dev_data])
             num_train_steps += int(math.ceil(task.len_train / args.train_batch_size)) * args.epochs
-        if task_id < len(task_manage) - 1: continue  # only want the last one
+        if task_id < len(task_manage) - 1:
+            continue  # only want the last one
 
     elif args.few_shot and task.json_args.get('train_samples') is not None:
         train = TensorDataset(*task.train_data[:task.json_args.get('train_samples')])
         valid = task.dev_data
         num_train_steps = \
-                int(math.ceil(task.json_args.get('train_samples') / args.train_batch_size)) * args.epochs
+            int(math.ceil(task.json_args.get('train_samples') / args.train_batch_size)) * args.epochs
     else:
         train = task.train_data
         valid = task.dev_data

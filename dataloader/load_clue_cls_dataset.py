@@ -25,7 +25,7 @@ def _load_cls_format_data(path, tokenizer, max_seq_length):
             labels.append(0 if isTest else int(lin_sp[-1]))
     return sentence1, sentence2, labels
 
-def clue_loader(task, tokenizer):
+def clue_loader(args, task, tokenizer):
     task.name = task.json_args['task_name']
     task.task_type = task.json_args['task_type']
     task.task_output = task.json_args['task_output']
@@ -39,7 +39,7 @@ def clue_loader(task, tokenizer):
             path = f'datasets/{dataset}/{sub_dataset}/{data_type}.tsv'
             sentence1, sentence2, labels = _load_cls_format_data(path, tokenizer, task.args.max_seq_length)
             if len(sentence2) == 0:
-                features = single_sentence_token(sentence1, tokenizer, task.args.max_seq_length)
+                features = single_sentence_token(sentence1, tokenizer, args.max_seq_length)
             else:
                 features = sentence_pair_token(sentence1, sentence2, tokenizer, task.args.max_seq_length)
 

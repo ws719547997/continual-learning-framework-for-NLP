@@ -47,7 +47,7 @@ def basic_args(parser):
     parser.add_argument("--task_list", default='tasklist/jd21_5.json', type=str, help='input task list,txt, or json')
 
     parser.add_argument('--seed', type=int, default=511, help="random seed for initialization")
-    parser.add_argument('--approach', type=str, default='bert_last_ncl', help='网络名称')
+    parser.add_argument('--approach', type=str, default='last', help='网络名称')
     parser.add_argument('--comment', type=str, default='', help='备注')
     parser.add_argument('--f1_macro', action='store_true')
     parser.add_argument('--mutli_task', action='store_true')
@@ -91,7 +91,7 @@ def encoder_args(parser):
 
 
 def top_args(parser):
-    parser.add_argument("--top_type", default='textcnn', type=str, help="在encoder上加一个网络")
+    parser.add_argument("--top_name", default='textcnn', type=str, help="在encoder上加一个网络")
     return parser
 
 

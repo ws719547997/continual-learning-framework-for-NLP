@@ -22,9 +22,9 @@ class TextCNN(nn.Module):
         self.dropout = nn.Dropout(self.args.target_dropout_prob)
         return
 
-    def forward(self, sequence_output):
+    def forward(self, last_hidden_state):
 
-        h = sequence_output.view(-1, 1, self.WORD_DIM * self.args.max_seq_length)
+        h = last_hidden_state.view(-1, 1, self.WORD_DIM * self.args.max_seq_length)
 
         h1 = F.max_pool1d(F.relu(self.c1(h)), self.args.max_seq_length - self.FILTERS[0] + 1).view(-1,
                                                                                                    self.FILTER_NUM[0],
@@ -37,7 +37,7 @@ class TextCNN(nn.Module):
                                                                                                    1)
 
         h = torch.cat([h1, h2, h3], 1)
-        h = h.view(sequence_output.size(0), -1)
+        h = h.view(last_hidden_state.size(0), -1)
         h = self.dropout(h)
 
         return h
