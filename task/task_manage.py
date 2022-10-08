@@ -8,7 +8,7 @@ from typing import List
 
 from dataloader.load_clue_cls_dataset import clue_loader
 from dataloader.load_dsc_dataset import dsc_loader
-from models.model_builder import build_encoder
+from model_builder import build_encoder
 from task.BaseTask import BaseTask
 
 

@@ -82,7 +82,7 @@ def eval_args(parser):
 
 
 def encoder_args(parser):
-    parser.add_argument("--bert_name", default='ptm/bert-base-uncased', type=str, help='bert模型存放的目录')
+    parser.add_argument("--bert_name", default='ptm/chinese-roberta-wwm-ext', type=str, help='bert模型存放的目录')
     parser.add_argument("--bert_type", default='auto', type=str, help='bert模型存放的目录')
     parser.add_argument("--bert_hidden_size", default=768, type=int, help="在target网络中很多也用到这个参数设置网络大小")
     parser.add_argument('--train_bert', action='store_true')

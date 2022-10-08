@@ -1,7 +1,6 @@
 from torch import nn
-from models.model_builder import *
+from model_builder import *
 from models.encoder.base_encoder import Encoder
-from task.BaseTask import BaseTask
 
 
 class Net(nn.Module):
