@@ -9,13 +9,14 @@ from task.task_manage import TaskManage
 from torchinfo import summary
 from utils import *
 from method_builder import build_method
+from log_bulider import Log
 
 print('0. init.....')
 args = set_args()
-
 args.few_shot = True
-
 set_seeds(args.seed)
+log = Log(args)
+
 
 gpu_ranks = get_available_gpus(order='load', memoryFree=8000, limit=1)
 os.environ['CUDA_LAUNCH_BLOCKING'] = str(gpu_ranks[0])

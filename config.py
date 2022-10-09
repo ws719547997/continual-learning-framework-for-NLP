@@ -45,10 +45,10 @@ def basic_args(parser):
     """
 
     parser.add_argument("--task_list", default='tasklist/jd21_5.json', type=str, help='input task list,txt, or json')
-
+    parser.add_argument("--output_dir", default='output/', type=str, help='文件保存目录')
     parser.add_argument('--seed', type=int, default=511, help="random seed for initialization")
     parser.add_argument('--approach', type=str, default='last', help='网络名称')
-    parser.add_argument('--comment', type=str, default='', help='备注')
+    parser.add_argument('--comment', type=str, default='test', help='备注')
     parser.add_argument('--f1_macro', action='store_true')
     parser.add_argument('--mutli_task', action='store_true')
     parser.add_argument('--few_shot', action='store_true')
@@ -83,7 +83,6 @@ def eval_args(parser):
 
 def encoder_args(parser):
     parser.add_argument("--bert_name", default='ptm/chinese-roberta-wwm-ext', type=str, help='bert模型存放的目录')
-    parser.add_argument("--bert_type", default='auto', type=str, help='bert模型存放的目录')
     parser.add_argument("--bert_hidden_size", default=768, type=int, help="在target网络中很多也用到这个参数设置网络大小")
     parser.add_argument('--train_bert', action='store_true')
     parser.add_argument("--hidden_dropout_prob", default=0.1, type=float, help="Dropout rate for hidden states.")
