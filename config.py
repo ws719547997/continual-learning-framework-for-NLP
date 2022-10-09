@@ -44,7 +44,7 @@ def basic_args(parser):
         snap10k.Home_and_Kitchen_5 snap10k.Arts_Crafts_and_Sewing_5 snap10k.Video_Games_5 snap10k.CDs_and_Vinyl_5
     """
 
-    parser.add_argument("--task_list", default='tasklist/jd21_5.json', type=str, help='input task list,txt, or json')
+    parser.add_argument("--task_list", default='tasklist/jd21_1.json', type=str, help='input task list,txt, or json')
     parser.add_argument("--output_dir", default='output/', type=str, help='文件保存目录')
     parser.add_argument('--seed', type=int, default=511, help="random seed for initialization")
     parser.add_argument('--approach', type=str, default='last', help='网络名称')
@@ -56,7 +56,7 @@ def basic_args(parser):
 
 
 def tokenizer_args(parser):
-    parser.add_argument("--max_seq_length", default=128, type=int,
+    parser.add_argument("--max_seq_length", default=256, type=int,
                         help="The maximum total input sequence length after WordPiece tokenization. \n"
                              "Sequences longer than this will be truncated, and sequences shorter \n"
                              "than this will be padded.")
@@ -66,10 +66,10 @@ def tokenizer_args(parser):
 def train_args(parser):
     parser.add_argument("--train_batch_size", default=128, type=int, help="Total batch size for training.")
     parser.add_argument("--eval_batch_size", default=128, type=int, help="Total batch size for eval.")
-    parser.add_argument('--epochs', type=int, default=50)
+    parser.add_argument('--epochs', type=int, default=20)
     parser.add_argument('--optimizer', type=str, default='sgd')
     parser.add_argument('--sgd_momentum', action='store_true')
-    parser.add_argument('--lr', type=float, default=0.001)
+    parser.add_argument('--lr', type=float, default=0.08)
     parser.add_argument('--lr_min', default=1e-4, type=float, required=False, help='(default=%(default)f)')
     parser.add_argument('--lr_factor', default=3, type=float, required=False, help='(default=%(default)f)')
     parser.add_argument('--lr_patience', default=3, type=int, required=False, help='(default=%(default)f)')

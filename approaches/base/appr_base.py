@@ -1,9 +1,10 @@
 import torch
-
+from log_bulider import Log
 
 class Appr(object):
-    def __init__(self, model, args, device):
+    def __init__(self, model, args, device, logger):
         self.model = model
+        self.logger:Log = logger
         self.args = args
         self.epochs = args.epochs
         self.lr = args.lr

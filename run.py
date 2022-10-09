@@ -13,7 +13,8 @@ from log_bulider import Log
 
 print('0. init.....')
 args = set_args()
-# args.few_shot = True
+args.few_shot = True
+args.sgd_momentum = True
 set_seeds(args.seed)
 logger = Log(args)
 gpu_ranks = get_available_gpus(order='load', memoryFree=8000, limit=1)
@@ -27,9 +28,11 @@ task_manage = TaskManage(args)
 
 Appr, Net = build_method(args)
 model = Net(args, task_manage, logger)
-logger.add_model_summary(model, ((32, 128), (32, 128), (32, 128)),
-        dtypes=['torch.IntTensor', 'torch.IntTensor', 'torch.IntTensor'],
-        device='cpu')
+logger.add_model_summary(model,
+                         ((args.train_batch_size, args.max_seq_length), (args.train_batch_size, args.max_seq_length),
+                          (args.train_batch_size, args.max_seq_length)),
+                         dtypes=['torch.IntTensor', 'torch.IntTensor', 'torch.IntTensor'],
+                         device='cpu')
 model = model.to(device)
 appr = Appr(model, args, device, logger)
 
@@ -40,6 +43,7 @@ logger.add_metric('f1', (len(task_manage), len(task_manage)))
 
 for task_id, task in enumerate(task_manage.tasklist):
     # 为每个任务设定自己的参数
+    task_manage.print_task_info(task)
     args = task_manage.set_task_args(args, task)
 
     if args.mutli_task:
@@ -72,8 +76,7 @@ for task_id, task in enumerate(task_manage.tasklist):
     valid_dataloader = DataLoader(valid, sampler=valid_sampler, batch_size=args.eval_batch_size, pin_memory=True)
 
     logger.add_gpu_point('training')
-    appr.train(args, task_id, train_dataloader, valid_dataloader, num_train_steps=num_train_steps, train_data=train,
-               valid_data=valid)
+    appr.train(args, task_id, train_dataloader, valid_dataloader, num_train_steps=num_train_steps, task=task)
 
     logger.add_gpu_point('testing')
     for test_id, test_task in enumerate(task_manage.tasklist):

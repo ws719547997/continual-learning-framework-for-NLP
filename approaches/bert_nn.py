@@ -9,10 +9,10 @@ from approaches.base.appr_base import Appr as ApprBase
 
 class Appr(ApprBase):
     def __init__(self, model, args, device, logger):
-        super(Appr, self).__init__(model=model, args=args, device=device)
+        super(Appr, self).__init__(model=model, args=args, device=device, logger=logger)
         return
 
-    def train(self, args, t, train, valid, num_train_steps=None, train_data=None, valid_data=None):
+    def train(self, args, t, train, valid, num_train_steps=None, task=None):
         self.set_args(args)
         best_loss = np.inf
 
@@ -33,6 +33,12 @@ class Appr(ApprBase):
             # Valid
             valid_loss, valid_acc, valid_f1_macro = self.eval(t, valid)
             print(' Valid: loss={:.3f}, acc={:5.1f}% |'.format(valid_loss, 100 * valid_acc), end='')
+
+            self.logger.writer.add_scalar(f'{task.name}/loss', train_loss, e)
+            self.logger.writer.add_scalar(f'{task.name}/acc', train_acc * 100, e)
+            self.logger.writer.add_scalar(f'{task.name}/loss', valid_loss, e)
+            self.logger.writer.add_scalar(f'{task.name}/acc', valid_acc * 100, e)
+
             # Adapt lr
             if valid_loss < best_loss:
                 best_loss = valid_loss

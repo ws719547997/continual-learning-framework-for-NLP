@@ -1,0 +1,14 @@
+{
+    "target": "linear",
+    "task_list": [
+        {
+            "task_name": "jd21.褪黑素",
+            "task_type": "dsc",
+            "language": "zh",
+            "task_output": 2,
+            "target": "linear",
+            "train_samples": 1000
+        }
+
+    ]
+}

@@ -4,13 +4,13 @@ import json
 from shutil import copyfile
 import numpy as np
 from torchinfo import summary
-
+from torch.utils.tensorboard import SummaryWriter
 from utils import GPUMonitor
 
 
 class Log:
     def __init__(self, args):
-        self.exp_name = f'_{args.approach}_B{args.train_batch_size}_E{args.epochs}_{args.comment}'
+        self.exp_name = f'_{args.approach}_{args.task_list.split("/")[-1].split(".")[0]}_{args.bert_name.split("/")[-1]}_{args.comment}'
         self.date = time.strftime("%m%d%H%M", time.localtime())
         self.dir = args.output_dir + self.date + self.exp_name + '/'
         self.gpu_monitor = None
@@ -23,7 +23,8 @@ class Log:
         copyfile(args.task_list, self.dir + 'tasklist.json')
         # 把args的参数保存起来
         json.dump(args.__dict__, open(self.dir + 'args.json', 'w'), sort_keys=True, indent=2)
-
+        # 创建Tensorboard
+        self.writer = SummaryWriter(self.dir+'runs')
         print('init')
 
     def set_gpu_monitor(self, interval, rank):
@@ -47,3 +48,4 @@ class Log:
         self.gpu_monitor.stop(f'{self.dir}/gpu_status.json')
         for k, v in self.metric.items():
             np.savetxt(self.dir+k+'.txt', v*100, '%.3f', delimiter='\t')
+        self.writer.close()
