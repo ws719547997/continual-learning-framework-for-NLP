@@ -82,8 +82,10 @@ def eval_args(parser):
 
 
 def encoder_args(parser):
+    # 注意！！！ 请确定模型对应的输出维度是不是768。
     parser.add_argument("--bert_name", default='ptm/chinese-roberta-wwm-ext', type=str, help='bert模型存放的目录')
-    parser.add_argument("--bert_hidden_size", default=768, type=int, help="在target网络中很多也用到这个参数设置网络大小")
+    parser.add_argument("--bert_hidden_size", default=768, type=int,
+                        help="在target网络中很多也用到这个参数设置网络大小")
     parser.add_argument('--train_bert', action='store_true')
     parser.add_argument("--hidden_dropout_prob", default=0.1, type=float, help="Dropout rate for hidden states.")
     return parser

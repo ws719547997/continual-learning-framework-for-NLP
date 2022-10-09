@@ -39,7 +39,7 @@ class TaskManage:
         1. [CLS] sent1 [SEP]
         2. [CLS] sent1 [SEP] sent2 [SEP]
         """
-        print(f"Chose {self.args.bert_type} as tokenizer.")
+        print(f"Chose {self.args.bert_name} as tokenizer.")
         tokenizer, _, _ = build_encoder(self.args)
         return tokenizer.from_pretrained(self.args.bert_name)
 

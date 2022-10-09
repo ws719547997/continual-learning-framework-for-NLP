@@ -4,7 +4,7 @@ from models.encoder.base_encoder import Encoder
 
 
 class Net(nn.Module):
-    def __init__(self, args, task_manage):
+    def __init__(self, args, task_manage, logger):
         super(Net, self).__init__()
         self.args = args
 

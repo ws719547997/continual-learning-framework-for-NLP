@@ -8,7 +8,7 @@ from approaches.base.appr_base import Appr as ApprBase
 
 
 class Appr(ApprBase):
-    def __init__(self, model, args, device):
+    def __init__(self, model, args, device, logger):
         super(Appr, self).__init__(model=model, args=args, device=device)
         return
 

@@ -13,31 +13,30 @@ from log_bulider import Log
 
 print('0. init.....')
 args = set_args()
-args.few_shot = True
+# args.few_shot = True
 set_seeds(args.seed)
-log = Log(args)
-
-
+logger = Log(args)
 gpu_ranks = get_available_gpus(order='load', memoryFree=8000, limit=1)
 os.environ['CUDA_LAUNCH_BLOCKING'] = str(gpu_ranks[0])
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-# gpu_monitor = GPUMonitor(150, gpu_ranks)
+
+logger.set_gpu_monitor(200, gpu_ranks)
 
 print('1. Load task, model and approach.....')
 task_manage = TaskManage(args)
 
 Appr, Net = build_method(args)
-model = Net(args, task_manage)
-summary(model, ((32, 128), (32, 128), (32, 128)),
+model = Net(args, task_manage, logger)
+logger.add_model_summary(model, ((32, 128), (32, 128), (32, 128)),
         dtypes=['torch.IntTensor', 'torch.IntTensor', 'torch.IntTensor'],
         device='cpu')
 model = model.to(device)
-appr = Appr(model, args, device)
+appr = Appr(model, args, device, logger)
 
 print('2. Start training.....')
-acc = np.zeros((len(task_manage), len(task_manage)), dtype=np.float32)
-lss = np.zeros((len(task_manage), len(task_manage)), dtype=np.float32)
-f1 = np.zeros((len(task_manage), len(task_manage)), dtype=np.float32)
+logger.add_metric('acc', (len(task_manage), len(task_manage)))
+logger.add_metric('loss', (len(task_manage), len(task_manage)))
+logger.add_metric('f1', (len(task_manage), len(task_manage)))
 
 for task_id, task in enumerate(task_manage.tasklist):
     # 为每个任务设定自己的参数
@@ -72,9 +71,11 @@ for task_id, task in enumerate(task_manage.tasklist):
     valid_sampler = SequentialSampler(valid)
     valid_dataloader = DataLoader(valid, sampler=valid_sampler, batch_size=args.eval_batch_size, pin_memory=True)
 
+    logger.add_gpu_point('training')
     appr.train(args, task_id, train_dataloader, valid_dataloader, num_train_steps=num_train_steps, train_data=train,
                valid_data=valid)
 
+    logger.add_gpu_point('testing')
     for test_id, test_task in enumerate(task_manage.tasklist):
         test = test_task.test_data
         test_sampler = SequentialSampler(test)
@@ -82,10 +83,10 @@ for task_id, task in enumerate(task_manage.tasklist):
 
         test_loss, test_acc, test_f1 = appr.eval(test_id, test_dataloader)
 
-        acc[task_id, test_id] = test_acc
-        lss[task_id, test_id] = test_loss
-        f1[task_id, test_id] = test_f1
+        logger.set_metric('acc', (task_id, test_id), test_acc)
+        logger.set_metric('loss', (task_id, test_id), test_loss)
+        logger.set_metric('f1', (task_id, test_id), test_f1)
 
 print('4. Logging')
-
+logger.end()
 print('done')
