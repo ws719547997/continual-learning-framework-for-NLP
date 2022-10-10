@@ -47,7 +47,7 @@ def basic_args(parser):
     parser.add_argument("--task_list", default='tasklist/jd21_1.json', type=str, help='input task list,txt, or json')
     parser.add_argument("--output_dir", default='output/', type=str, help='文件保存目录')
     parser.add_argument('--seed', type=int, default=511, help="random seed for initialization")
-    parser.add_argument('--approach', type=str, default='last', help='网络名称')
+    parser.add_argument('--approach', type=str, default='textcnn', help='网络名称')
     parser.add_argument('--comment', type=str, default='test', help='备注')
     parser.add_argument('--f1_macro', action='store_true')
     parser.add_argument('--mutli_task', action='store_true')

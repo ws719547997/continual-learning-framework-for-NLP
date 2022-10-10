@@ -6,7 +6,6 @@ import math
 from torch.utils.data import DataLoader, RandomSampler, SequentialSampler, ConcatDataset, TensorDataset
 from config import set_args
 from task.task_manage import TaskManage
-from torchinfo import summary
 from utils import *
 from method_builder import build_method
 from log_bulider import Log
