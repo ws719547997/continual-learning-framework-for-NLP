@@ -5,22 +5,22 @@ wangsong2 2022.8.31 (8月过得不错！）
 import math
 from torch.utils.data import DataLoader, RandomSampler, SequentialSampler, ConcatDataset, TensorDataset
 from config import set_args
-from task.task_manage import TaskManage
+from task.task_builder import TaskManage
 from utils import *
 from method_builder import build_method
 from log_bulider import Log
 
 print('0. init.....')
 args = set_args()
-args.few_shot = True
-args.sgd_momentum = True
+# args.few_shot = True
+# args.sgd_momentum = True
 set_seeds(args.seed)
 logger = Log(args)
 gpu_ranks = get_available_gpus(order='load', memoryFree=8000, limit=1)
 os.environ['CUDA_LAUNCH_BLOCKING'] = str(gpu_ranks[0])
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-logger.set_gpu_monitor(200, gpu_ranks)
+logger.set_gpu_monitor(1000, gpu_ranks)
 
 print('1. Load task, model and approach.....')
 task_manage = TaskManage(args)

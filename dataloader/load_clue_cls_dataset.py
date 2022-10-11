@@ -1,6 +1,6 @@
 import torch
+from paddlenlp.datasets import load_dataset
 from torch.utils.data import TensorDataset
-
 from tokenizer.fineturn_tokenizer import single_sentence_token, sentence_pair_token
 
 
@@ -24,6 +24,7 @@ def _load_cls_format_data(path, tokenizer, max_seq_length):
                 sentence2.append(lin_sp[1])
             labels.append(0 if isTest else int(lin_sp[-1]))
     return sentence1, sentence2, labels
+
 
 def clue_loader(args, task, tokenizer):
     task.name = task.json_args['task_name']
@@ -77,5 +78,11 @@ def clue_loader(args, task, tokenizer):
             with open("datasets/clue/iflytek/labels.json", 'r', encoding='utf-8') as f:
                 task.label = [json.loads(i)['label_des'] for i in f]
             task.task_output = len(task.label)
+
+    elif sub_dataset in ['c3', 'cmrc2018']:
+        train, dev, test = load_dataset(sub_dataset, splits=('train', 'dev', 'trial'))
+        for (data, data_type) in zip([train, dev, test],['train', 'test_nolabel', 'dev']):
+            feature = None
+
 
     return task
