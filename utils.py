@@ -93,7 +93,7 @@ class GPUstatus:
 
     def add_gpu_status(self, task_status=None):
 
-        time_step = time.time() - self._start_time
+        time_step = (time.time() - self._start_time)/60  # 分钟
         gpus = GPUtil.getGPUs()
         if task_status:
             self.task_status = task_status
