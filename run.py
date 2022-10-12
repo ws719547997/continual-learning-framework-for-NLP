@@ -48,9 +48,9 @@ for test_id, test_task in enumerate(task_manage.tasklist):
 
     test_loss, test_acc, test_f1 = appr.eval(test_id, test_dataloader)
 
-    logger.set_metric('zero_acc', (0, test_id), test_acc)
-    logger.set_metric('zero_loss', (0, test_id), test_loss)
-    logger.set_metric('zero_f1', (0, test_id), test_f1)
+    logger.set_metric('acc', (0, test_id), test_acc)
+    logger.set_metric('loss', (0, test_id), test_loss)
+    logger.set_metric('f1', (0, test_id), test_f1)
 
 
 for task_id, task in enumerate(task_manage.tasklist):

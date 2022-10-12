@@ -44,7 +44,7 @@ def basic_args(parser):
         snap10k.Home_and_Kitchen_5 snap10k.Arts_Crafts_and_Sewing_5 snap10k.Video_Games_5 snap10k.CDs_and_Vinyl_5
     """
 
-    parser.add_argument("--task_list", default='tasklist/jd21.json', type=str, help='input task list,txt, or json')
+    parser.add_argument("--task_list", default='tasklist/jd21_5.json', type=str, help='input task list,txt, or json')
     parser.add_argument("--output_dir", default='output/', type=str, help='文件保存目录')
     parser.add_argument('--seed', type=int, default=511, help="random seed for initialization")
     parser.add_argument('--approach', type=str, default='textcnn', help='网络名称')
