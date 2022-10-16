@@ -1,6 +1,7 @@
 import time
 import os
 import json
+import logging
 from shutil import copyfile
 import numpy as np
 from torchinfo import summary
@@ -15,6 +16,7 @@ class Log:
         self.dir = args.output_dir + self.date + self.exp_name + '/'
         self.gpu_monitor = None
         self.metric = {}
+        logging.basicConfig(filename='my.log', level=logging.INFO)
         print(os.getcwd())
         # 创建目录
         if not os.path.exists(self.dir):
@@ -25,12 +27,19 @@ class Log:
         json.dump(args.__dict__, open(self.dir + 'args.json', 'w'), sort_keys=True, indent=2)
         # 创建Tensorboard
         self.writer = SummaryWriter(self.dir+'runs')
-        print('init')
+        # 创建logger
+        self.logger = logging.getLogger()
+        self.logger.setLevel(logging.INFO)
+        self.logger.addHandler(logging.StreamHandler())
+        self.logger.addHandler(logging.FileHandler(self.dir+'info.log', encoding='utf8'))
+        self.logger.info(f'Log init. save at {self.dir}.')
 
     def set_gpu_monitor(self, interval, rank):
+        self.logger.info(f'Log set_gpu_monitor. interval={interval}, rank={interval}.')
         self.gpu_monitor = GPUMonitor(interval, rank)
 
     def add_metric(self, name, shape, dtype=np.float32):
+        self.logger.info(f'Log add_metric: {name}, shape:{shape}.')
         self.metric.update({name: np.zeros(shape, dtype=dtype)})
 
     def add_gpu_point(self, comment=None):
@@ -49,3 +58,4 @@ class Log:
         for k, v in self.metric.items():
             np.savetxt(self.dir+k+'.txt', v*100, '%.3f', delimiter='\t')
         self.writer.close()
+        self.logger.info(f'All done!')

@@ -10,19 +10,19 @@ from utils import *
 from method_builder import build_method
 from log_bulider import Log
 
-print('0. init.....')
 args = set_args()
 # args.few_shot = True
 # args.sgd_momentum = True
 set_seeds(args.seed)
 logger = Log(args)
+logger.logger.info(f'Start exp.')
 gpu_ranks = get_available_gpus(order='load', memoryFree=8000, limit=1)
 os.environ['CUDA_LAUNCH_BLOCKING'] = str(gpu_ranks[0])
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 logger.set_gpu_monitor(1000, gpu_ranks)
 
-print('1. Load task, model and approach.....')
+logger.logger.info(f'Load task, model and approach.....')
 task_manage = TaskManage(args)
 
 Appr, Net = build_method(args)
@@ -35,7 +35,7 @@ logger.add_model_summary(model,
 model = model.to(device)
 appr = Appr(model, args, device, logger)
 
-print('2. Start training.....')
+logger.logger.info(f'Start training.....')
 logger.add_metric('acc', (len(task_manage)+1, len(task_manage)))
 logger.add_metric('loss', (len(task_manage)+1, len(task_manage)))
 logger.add_metric('f1', (len(task_manage)+1, len(task_manage)))
@@ -101,8 +101,5 @@ for task_id, task in enumerate(task_manage.tasklist):
         logger.set_metric('loss', (task_id+1, test_id), test_loss)
         logger.set_metric('f1', (task_id+1, test_id), test_f1)
 
-
-
-print('4. Logging')
 logger.end()
-print('done')
+
