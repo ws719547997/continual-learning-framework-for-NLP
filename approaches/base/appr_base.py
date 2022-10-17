@@ -1,10 +1,11 @@
 import torch
 from log_bulider import Log
 
+
 class Appr(object):
     def __init__(self, model, args, device, logger):
         self.model = model
-        self.logger:Log = logger
+        self.logger: Log = logger
         self.args = args
         self.epochs = args.epochs
         self.lr = args.lr
@@ -30,19 +31,17 @@ class Appr(object):
         self.eval_batch_size = args.eval_batch_size
         self.optimizer = self._get_optimizer()
 
-    def _get_optimizer(self,lr=None):
-        if lr is None: lr=self.lr
+    def _get_optimizer(self, lr=None):
+        if lr is None: lr = self.lr
+        self.logger.logger.info(f'Set optimizer {self.args.optimizer}.')
         if self.args.optimizer == 'sgd' and self.args.sgd_momentum:
-            print('sgd+momentum')
-            return torch.optim.SGD(self.model.parameters(),lr=lr, momentum=0.9,nesterov=True)
+            return torch.optim.SGD(self.model.parameters(), lr=lr, momentum=0.9, nesterov=True)
         elif self.args.optimizer == 'sgd':
-            print('sgd')
-            return torch.optim.SGD(self.model.parameters(),lr=lr)
+            return torch.optim.SGD(self.model.parameters(), lr=lr)
         elif self.args.optimizer == 'adam':
-            print('adam')
-            return torch.optim.Adam(self.model.parameters(),lr=lr)
+            return torch.optim.Adam(self.model.parameters(), lr=lr)
 
-    def f1_compute_fn(self,y_true, y_pred, average):
+    def f1_compute_fn(self, y_true, y_pred, average):
         try:
             from sklearn.metrics import f1_score
         except ImportError:
@@ -86,14 +85,13 @@ class Appr(object):
         pred_list = []
 
         with torch.no_grad():
-
             for step, batch in enumerate(data):
                 batch = [
                     bat.to(self.device) if bat is not None else None for bat in batch]
                 input_ids, segment_ids, input_mask, targets = batch
                 real_b = input_ids.size(0)
 
-                outputs = self.model.forward(input_ids, segment_ids, input_mask,t)
+                outputs = self.model.forward(input_ids, segment_ids, input_mask, t)
 
                 output = outputs[t]
 

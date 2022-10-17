@@ -23,7 +23,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 logger.set_gpu_monitor(1000, gpu_ranks)
 
 logger.logger.info(f'Load task, model and approach.....')
-task_manage = TaskManage(args)
+task_manage = TaskManage(args, logger)
 
 Appr, Net = build_method(args)
 model = Net(args, task_manage, logger)
@@ -100,6 +100,8 @@ for task_id, task in enumerate(task_manage.tasklist):
         logger.set_metric('acc', (task_id+1, test_id), test_acc)
         logger.set_metric('loss', (task_id+1, test_id), test_loss)
         logger.set_metric('f1', (task_id+1, test_id), test_f1)
+
+
 
 logger.end()
 

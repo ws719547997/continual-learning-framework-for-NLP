@@ -13,8 +13,9 @@ from task.BaseTask import BaseTask
 
 
 class TaskManage:
-    def __init__(self, args):
+    def __init__(self, args, logger):
         self.args = args
+        self.logger = logger
         self.tasklist: List[BaseTask] = []
         self.tokenizer = self._set_tokenizer()
 
@@ -39,7 +40,7 @@ class TaskManage:
         1. [CLS] sent1 [SEP]
         2. [CLS] sent1 [SEP] sent2 [SEP]
         """
-        print(f"Chose {self.args.bert_name} as tokenizer.")
+        self.logger.logger.info(f"Chose {self.args.bert_name} as tokenizer.")
         tokenizer, _, _ = build_encoder(self.args)
         return tokenizer.from_pretrained(self.args.bert_name)
 
@@ -66,7 +67,7 @@ class TaskManage:
                 task = clue_loader(self.args, task, self.tokenizer)
 
             self.print_task_info(task)
-            print(f'Load all data in {time.time() - time_start:.2f}s.')
+            self.logger.logger.info(f'Load all data in {time.time() - time_start:.2f}s.')
 
     def build_args(self):
         for j in self.tasklist_args:
@@ -84,7 +85,7 @@ class TaskManage:
         return len(self.tasklist)
 
     def print_task_info(self, task: BaseTask):
-        print('-' * 70)
-        print(f'{self.tasklist.index(task)}. name:{task.name} | type:{task.task_type} | language:{task.language}')
-        print(
+        self.logger.logger.info('-' * 70)
+        self.logger.logger.info(f'{self.tasklist.index(task)}. name:{task.name} | type:{task.task_type} | language:{task.language}')
+        self.logger.logger.info(
             f'train:{len(task.train_data)} | dev:{len(task.dev_data)} | test:{len(task.test_data)} | test nolabel:{len(task.test_nolabel_data)} | output:{task.task_output}')

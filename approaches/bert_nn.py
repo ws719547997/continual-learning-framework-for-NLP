@@ -25,14 +25,13 @@ class Appr(ApprBase):
             clock1 = time.time()
             train_loss, train_acc, train_f1_macro = self.eval(t, train)
             clock2 = time.time()
-            print(f'Epoch {e + 1}, '
-                  f'time {self.train_batch_size * (clock1 - clock0) / len(train):4.2f}s / '
-                  f'{1000 * self.train_batch_size * (clock2 - clock1) / len(train):4.2f}s | '
-                  f'Train: loss={train_loss:.3f}, acc={100*train_acc:5.1f}',
-                  end='')
             # Valid
             valid_loss, valid_acc, valid_f1_macro = self.eval(t, valid)
-            print(' Valid: loss={:.3f}, acc={:5.1f}% |'.format(valid_loss, 100 * valid_acc), end='')
+            self.logger.logger.info(f'Epoch {e + 1}, '
+                  f'time {self.train_batch_size * (clock1 - clock0) / len(train):4.2f}s / '
+                  f'{1000 * self.train_batch_size * (clock2 - clock1) / len(train):4.2f}s | '
+                  f'Train: loss={train_loss:.3f}, acc={100*train_acc:5.1f} |'
+                                    f'Valid: loss={valid_loss:.3f}, acc={100 * valid_acc:5.1f}% |')
 
             self.logger.writer.add_scalar(f'{task.name}/loss', train_loss, e)
             self.logger.writer.add_scalar(f'{task.name}/acc', train_acc * 100, e)
@@ -44,12 +43,12 @@ class Appr(ApprBase):
                 best_loss = valid_loss
                 best_model = models_utils.get_model(self.model)
                 patience = self.lr_patience
-                print(' *', end='')
+                self.logger.logger.info('set best model.')
             else:
                 patience -= 1
                 if patience <= 0:
                     self.lr /= self.lr_factor
-                    print(' lr={:.1e}'.format(self.lr), end='')
+                    self.logger.logger.info('adjust lr={:.1e}'.format(self.lr))
                     if self.lr < self.lr_min:
                         print()
                         break

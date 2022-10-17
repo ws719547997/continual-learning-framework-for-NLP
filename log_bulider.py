@@ -48,6 +48,7 @@ class Log:
     def set_metric(self, name, pos, value):
         (curr, test) = pos
         self.metric[name][curr][test] = value
+        self.writer.add_scalar(f'{test}/{name}', value, curr)
 
     def add_model_summary(self, model, input_shape, dtypes, device='cpu'):
         with open(self.dir + 'model_summary.txt', 'w', encoding='utf-8') as f:

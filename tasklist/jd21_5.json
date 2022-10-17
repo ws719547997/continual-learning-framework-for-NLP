@@ -7,8 +7,8 @@
             "language": "zh",
             "task_output": 2,
             "target": "linear",
-            "epochs": 1,
-            "train_samples": 50
+            "epochs": 2,
+            "train_samples": 200
         },
         {
             "task_name": "jd21.维生素",
@@ -16,7 +16,8 @@
             "language": "zh",
             "task_output": 2,
             "target": "linear",
-            "epochs": 1
+            "epochs": 2,
+            "train_samples": 200
         },
         {
             "task_name": "jd21.无线耳机",
@@ -24,7 +25,8 @@
             "language": "zh",
             "task_output": 2,
             "target": "linear",
-            "epochs": 2
+            "epochs": 2,
+            "train_samples": 200
         },
         {
             "task_name": "jd21.蛋白粉",
@@ -32,7 +34,8 @@
             "language": "zh",
             "task_output": 2,
             "target": "linear",
-            "epochs": 1
+            "epochs": 2,
+            "train_samples": 200
         },
         {
             "task_name": "jd21.游戏机",
@@ -40,8 +43,8 @@
             "language": "zh",
             "task_output": 2,
             "target": "linear",
-            "epochs": 1,
-            "train_samples": 50
+            "epochs": 2,
+            "train_samples": 200
         }
 
     ]
