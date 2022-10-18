@@ -33,7 +33,6 @@ class Appr(object):
 
     def _get_optimizer(self, lr=None):
         if lr is None: lr = self.lr
-        self.logger.logger.info(f'Set optimizer {self.args.optimizer}.')
         if self.args.optimizer == 'sgd' and self.args.sgd_momentum:
             return torch.optim.SGD(self.model.parameters(), lr=lr, momentum=0.9, nesterov=True)
         elif self.args.optimizer == 'sgd':
@@ -109,3 +108,8 @@ class Appr(object):
             f1 = self.f1_compute_fn(y_pred=torch.cat(pred_list, 0), y_true=torch.cat(target_list, 0), average='macro')
 
         return total_loss / total_num, total_acc / total_num, f1
+
+    def print_info(self):
+        self.logger.logger.info(
+            f'total_epoch:{self.args.epochs} | optimizer:{self.args.optimizer} | lr:{self.args.lr}. \n'
+            f'target:{self.args.target} | fewshot:{self.args.few_shot} | mutli-task:{self.args.mutli_task}.')

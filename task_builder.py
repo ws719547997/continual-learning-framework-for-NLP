@@ -85,7 +85,7 @@ class TaskManage:
         return len(self.tasklist)
 
     def print_task_info(self, task: BaseTask):
-        self.logger.logger.info('-' * 70)
+        self.logger.logger.info('=' * 110)
         self.logger.logger.info(f'{self.tasklist.index(task)}. name:{task.name} | type:{task.task_type} | language:{task.language}')
         self.logger.logger.info(
             f'train:{len(task.train_data)} | dev:{len(task.dev_data)} | test:{len(task.test_data)} | test nolabel:{len(task.test_nolabel_data)} | output:{task.task_output}')

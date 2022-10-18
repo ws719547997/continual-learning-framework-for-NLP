@@ -1,0 +1,32 @@
+{
+  "task_list": [
+    {
+      "task_name": "amz20.Sandal",
+      "task_type": "dsc",
+      "language": "en",
+      "task_output": 2,
+      "target": "linear"
+    },
+    {
+      "task_name": "amz20.Magazine_Subscriptions",
+      "task_type": "dsc",
+      "language": "en",
+      "task_output": 2,
+      "target": "linear"
+    },
+    {
+      "task_name": "amz20.RiceCooker",
+      "task_type": "dsc",
+      "language": "en",
+      "task_output": 2,
+      "target": "linear"
+    },
+    {
+      "task_name": "amz20.Flashlight",
+      "task_type": "dsc",
+      "language": "en",
+      "task_output": 2,
+      "target": "linear"
+    }
+  ]
+}

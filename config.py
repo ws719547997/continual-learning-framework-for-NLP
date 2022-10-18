@@ -44,7 +44,7 @@ def basic_args(parser):
         snap10k.Home_and_Kitchen_5 snap10k.Arts_Crafts_and_Sewing_5 snap10k.Video_Games_5 snap10k.CDs_and_Vinyl_5
     """
 
-    parser.add_argument("--task_list", default='tasklist/jd21_5.json', type=str, help='input task list,txt, or json')
+    parser.add_argument("--task_list", default='tasklist/amz4.json', type=str, help='input task list,txt, or json')
     parser.add_argument("--output_dir", default='output/', type=str, help='文件保存目录')
     parser.add_argument('--seed', type=int, default=511, help="random seed for initialization")
     parser.add_argument('--approach', type=str, default='textcnn', help='网络名称')
@@ -56,7 +56,7 @@ def basic_args(parser):
 
 
 def tokenizer_args(parser):
-    parser.add_argument("--max_seq_length", default=256, type=int,
+    parser.add_argument("--max_seq_length", default=128, type=int,
                         help="The maximum total input sequence length after WordPiece tokenization. \n"
                              "Sequences longer than this will be truncated, and sequences shorter \n"
                              "than this will be padded.")
@@ -66,7 +66,7 @@ def tokenizer_args(parser):
 def train_args(parser):
     parser.add_argument("--train_batch_size", default=128, type=int, help="Total batch size for training.")
     parser.add_argument("--eval_batch_size", default=128, type=int, help="Total batch size for eval.")
-    parser.add_argument('--epochs', type=int, default=30)
+    parser.add_argument('--epochs', type=int, default=3)
     parser.add_argument('--optimizer', type=str, default='sgd')
     parser.add_argument('--sgd_momentum', action='store_true')
     parser.add_argument('--lr', type=float, default=0.08)
@@ -83,7 +83,7 @@ def eval_args(parser):
 
 def encoder_args(parser):
     # 注意！！！ 请确定模型对应的输出维度是不是768。
-    parser.add_argument("--bert_name", default='ptm/bert-base-chinese', type=str, help='bert模型存放的目录')
+    parser.add_argument("--bert_name", default='ptm/bert-base-uncased', type=str, help='bert模型存放的目录')
     parser.add_argument("--bert_hidden_size", default=768, type=int,
                         help="在target网络中很多也用到这个参数设置网络大小,可能是384,768,1024或者其他.")
     parser.add_argument('--train_bert', action='store_true')
@@ -98,5 +98,5 @@ def top_args(parser):
 
 def target_args(parser):
     parser.add_argument("--target_dropout_prob", default=0.5, type=float, help="Dropout rate for hidden states.")
-
+    parser.add_argument("--target", default='linear', type=str, help="从向量到输出结果之间的网络.")
     return parser

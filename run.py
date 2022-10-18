@@ -37,7 +37,7 @@ appr = Appr(model, args, device, logger)
 
 logger.logger.info(f'Start training.....')
 logger.add_metric('acc', (len(task_manage)+1, len(task_manage)))
-logger.add_metric('loss', (len(task_manage)+1, len(task_manage)))
+# logger.add_metric('loss', (len(task_manage)+1, len(task_manage)))
 logger.add_metric('f1', (len(task_manage)+1, len(task_manage)))
 
 # 先在开始测试一下空白模型在每个任务上的性能
@@ -49,7 +49,7 @@ for test_id, test_task in enumerate(task_manage.tasklist):
     test_loss, test_acc, test_f1 = appr.eval(test_id, test_dataloader)
 
     logger.set_metric('acc', (0, test_id), test_acc)
-    logger.set_metric('loss', (0, test_id), test_loss)
+    # logger.set_metric('loss', (0, test_id), test_loss)
     logger.set_metric('f1', (0, test_id), test_f1)
 
 
@@ -98,10 +98,9 @@ for task_id, task in enumerate(task_manage.tasklist):
         test_loss, test_acc, test_f1 = appr.eval(test_id, test_dataloader)
 
         logger.set_metric('acc', (task_id+1, test_id), test_acc)
-        logger.set_metric('loss', (task_id+1, test_id), test_loss)
+        # logger.set_metric('loss', (task_id+1, test_id), test_loss)
         logger.set_metric('f1', (task_id+1, test_id), test_f1)
-
-
+    logger.print_result()
 
 logger.end()
 
