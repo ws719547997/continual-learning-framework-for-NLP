@@ -41,7 +41,7 @@ logger.add_metric('acc', (len(task_manage)+1, len(task_manage)))
 logger.add_metric('f1', (len(task_manage)+1, len(task_manage)))
 
 # 先在开始测试一下空白模型在每个任务上的性能
-logger.info(f'Test with init model...')
+logger.logger.info(f'Test with init model...')
 for test_id, test_task in enumerate(task_manage.tasklist):
     test = test_task.test_data
     test_sampler = SequentialSampler(test)
