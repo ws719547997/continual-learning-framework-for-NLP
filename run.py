@@ -16,7 +16,7 @@ args = set_args()
 set_seeds(args.seed)
 logger = Log(args)
 logger.logger.info(f'Start exp.')
-gpu_ranks = get_available_gpus(order='load', memoryFree=8000, limit=1)
+gpu_ranks = get_available_gpus(order='first', memoryFree=8000, limit=1)
 os.environ['CUDA_LAUNCH_BLOCKING'] = str(gpu_ranks[0])
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
