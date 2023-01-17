@@ -70,7 +70,7 @@ class GPUMonitor(Thread):
         self._stopped = True
         self._value_lock.release()
         with open(path, 'w') as fp:
-            fp.write(json.dumps(self.gpu_status.status))
+            fp.write(json.dumps(self.gpu_status.status, ensure_ascii=False, indent=2))
 
 
 class GPUstatus:

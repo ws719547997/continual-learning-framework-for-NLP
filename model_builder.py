@@ -12,7 +12,7 @@ def build_encoder(args):
             BertConfig as Config
 
     # roberta format
-    if name in ['chinese-roberta-wwm-ext', 'roberta-large-wwm-chinese-cluecorpussmall']:
+    if name in ['chinese-roberta-wwm-ext', 'roberta-large-wwm-chinese-cluecorpussmall', 'roberta-base-finetuned-jd-binary-chinese']:
         from transformers import AutoTokenizer as Tokenizer, \
             AutoModel as Model, \
             AutoConfig as Config
