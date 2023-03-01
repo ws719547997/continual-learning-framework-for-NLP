@@ -42,7 +42,7 @@ class Tokenizer:
                               max_length=self.max_length, truncation=self.truncation, padding=self.padding,
                               return_tensors='np')
 
-    def ner_tokens_BIO(self, example: dict) -> dict:
+    def ner_tokens_bio(self, example: dict) -> dict:
         """
         input format:{
             'tokens': ['EU','rejects','German','call','to','boycott','British','lamb','.'],
@@ -61,3 +61,11 @@ class Tokenizer:
             token_dict['ner_tags'] = [0] + example['ner_tags'][:self.max_length - 2] + [0]
         return token_dict
 
+    def ner_mrc_bio(self, example:dict) -> dict:
+        """
+        input format:{
+
+        }
+        :param example:
+        :return:
+        """
